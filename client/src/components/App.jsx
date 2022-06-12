@@ -1,7 +1,9 @@
+import Sidebar from './Sidebar';
+
 function App() {
   return (
-    <div class="app">
-      <h1>Hello world!!!</h1>
+    <div className="app">
+      <Sidebar />
     </div>
   );
 }
