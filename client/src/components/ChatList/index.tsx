@@ -3,11 +3,10 @@ import moment from 'moment';
 
 import avatarSvg from '../../assets/img/avatar.svg';
 import styles from './ChatList.module.scss';
-import { classNames } from '../../utils/className';
 
 const { root, chat, sender, message, time, active } = styles;
 
-const getDateString = (date) => {
+const getDateString = (date: Date): string => {
   const dateMoment = moment(date);
   const now = moment();
 
@@ -22,13 +21,22 @@ const getDateString = (date) => {
   return dateMoment.format('hh:mm');
 };
 
-const chats = [
+type ChatItem = {
+  senderId: number;
+  // TODO: do i need it? or maybe just senderId?
+  senderName: string;
+  lastMessage: Message;
+  avatarUrl: string;
+};
+
+const chats: ChatItem[] = [
   {
     senderId: 1,
     senderName: 'Олег',
     lastMessage: {
       value: 'Привет, как дела?',
-      date: Date.parse('2022-06-12T11:18:00+03:00'),
+      // date: Date.parse('2022-06-12T11:18:00+03:00'),
+      date: new Date('2022-06-12T11:18:00+03:00'),
     },
     avatarUrl: avatarSvg,
   },
@@ -37,7 +45,8 @@ const chats = [
     senderName: 'Котях',
     lastMessage: {
       value: 'Шо ты, пес?',
-      date: Date.parse('2022-06-10T11:17:00+03:00'),
+      // date: Date.parse('2022-06-10T11:17:00+03:00'),
+      date: new Date('2022-06-10T11:17:00+03:00'),
     },
     avatarUrl: avatarSvg,
   },
@@ -46,7 +55,8 @@ const chats = [
     senderName: 'Олег',
     lastMessage: {
       value: 'Шо там, Путин еще не сдох???',
-      date: Date.parse('2022-05-10T10:35:00+03:00'),
+      // date: Date.parse('2022-05-10T10:35:00+03:00'),
+      date: new Date('2022-05-10T10:35:00+03:00'),
     },
     avatarUrl: avatarSvg,
   },
@@ -55,16 +65,17 @@ const chats = [
     senderName: 'Петя',
     lastMessage: {
       value: 'Ахахаха очень смишно',
-      date: Date.parse('2021-11-21T10:35:00+03:00'),
+      // date: Date.parse('2021-11-21T10:35:00+03:00'),
+      date: new Date('2021-11-21T10:35:00+03:00'),
     },
     avatarUrl: avatarSvg,
   },
 ];
 
-const ChatList = () => {
-  const [activeId, setActiveId] = React.useState(null);
+const ChatList: React.FC = () => {
+  const [activeId, setActiveId] = React.useState<number | null>(null);
 
-  const changeActiveId = (id) => () => {
+  const updateActiveId = (id: number) => () => {
     if (activeId === id) {
       setActiveId(null);
     } else {
@@ -77,8 +88,8 @@ const ChatList = () => {
       {chats.map((chatItem) => (
         <div
           key={chatItem.senderId}
-          className={chatItem.senderId === activeId ? classNames([chat, active]) : chat}
-          onClick={changeActiveId(chatItem.senderId)}>
+          className={`${chat} ${chatItem.senderId === activeId ? active : ''}`}
+          onClick={updateActiveId(chatItem.senderId)}>
           <img src={chatItem.avatarUrl} alt="avatar" />
           <span className={sender}>{chatItem.senderName}</span>
           <span className={message}>{chatItem.lastMessage.value}</span>
