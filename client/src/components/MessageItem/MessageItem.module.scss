@@ -1,0 +1,30 @@
+.root {
+  margin-bottom: 5px;
+  background-color: white;
+  display: inline-block;
+  align-self: flex-start;
+  border-radius: 20px;
+  padding: 2px 10px 2px 8px;
+
+  &.my {
+    align-self: flex-end;
+    background-color: #eeffde;
+
+    .time {
+      color: #7fc67a;
+    }
+  }
+}
+
+.message {
+  margin-right: 10px;
+}
+
+.time {
+  position: relative;
+  bottom: -3px;
+
+  font-size: 12px !important;
+  color: #b8babc;
+  font-weight: 600;
+}
