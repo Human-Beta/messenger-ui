@@ -9,7 +9,7 @@ import styles from './ChatItem.module.scss';
 const { sender, message, time, active } = styles;
 
 // TODO: move somewhere
-const getDateString = (date: Date): string => {
+const getDateString = (date: string): string => {
   const dateMoment = moment(date);
   const now = moment();
 

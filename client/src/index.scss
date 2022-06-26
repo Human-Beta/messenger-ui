@@ -1,4 +1,4 @@
-$sidebarInitWidth: 250px;
+$sidebarInitWidth: 450px;
 
 * {
   box-sizing: border-box;
@@ -22,18 +22,77 @@ img {
 
 .app {
   display: flex;
+  height: 100vh;
+  width: 100vw;
 
   .sidebar {
     width: $sidebarInitWidth;
     height: 100vh;
+    overflow: hidden;
+    background-color: white;
   }
 
   .chat-area {
     height: 100vh;
     flex-grow: 1;
+    overflow: hidden;
+  }
+
+  form.login,
+  form.register {
+    margin: 0 auto;
+    align-self: center;
+    box-shadow: 0px 0px 5px 0px black;
+    border-radius: 10px;
+
+    width: 500px;
+    padding: 50px;
     display: flex;
     flex-direction: column;
 
-    background-color: red;
+    background-color: #3390ec;
+
+    input {
+      margin-bottom: 20px;
+    }
+
+    input:focus {
+      box-shadow: 0px 0px 4px 0px black;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    input,
+    button {
+      padding: 20px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+    }
   }
+}
+
+.scrollable {
+  overflow: hidden;
+}
+
+.scrollable:hover {
+  overflow: overlay;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba($color: #a8bbbf, $alpha: 0.8);
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background-clip: content-box;
 }
