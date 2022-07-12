@@ -1,6 +1,6 @@
 type Message = {
   id: number;
-  senderNickName: string;
+  senderId: number;
   value: string;
   date: string;
 };

@@ -1,5 +1,6 @@
 type Chat = {
   id: number;
-  user: User;
+  name: string;
+  imageUrl: string;
   lastMessage: Message;
 };

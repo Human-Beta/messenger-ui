@@ -1,9 +1,11 @@
 import moment from 'moment';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSelectedChat } from '../../redux/chat/selectors';
 
+import { getSelectedChat } from '../../redux/chat/selectors';
 import { setSelectedChat } from '../../redux/chat/slice';
+
+import avatarSvg from '../../assets/img/avatar.svg';
 import styles from './ChatItem.module.scss';
 
 const { sender, message, time, active } = styles;
@@ -42,8 +44,10 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) => {
     <div
       className={`${styles.chat} ${chat.id === selectedChat?.id ? active : ''}`}
       onClick={updateSelectedChat(chat)}>
-      <img src={chat.user.avatarUrl} alt="avatar" />
-      <span className={sender}>{chat.user.name}</span>
+      {/* TODO: get image url from server. Images should be stored on the server */}
+      {/* <img src={chat.imageUrl} alt="avatar" /> */}
+      <img src={avatarSvg} alt="avatar" />
+      <span className={sender}>{chat.name}</span>
       <span className={message}>{chat.lastMessage.value}</span>
       <span className={time}>{getDateString(chat.lastMessage.date)}</span>
     </div>
