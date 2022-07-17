@@ -1,0 +1,4 @@
+- [ ] Add loaders
+  - [ ] chats loading
+  - [ ] messages loading
+- [ ] Use lodash?
