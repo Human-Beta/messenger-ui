@@ -1,4 +1,12 @@
 - [ ] Add loaders
   - [ ] chats loading
   - [ ] messages loading
+- [ ] Add retry mechanism when smth is not loaded
+- [ ] Store the next in the local storage
+  - [ ] current user
+  - [ ] chats?
+  - [ ] messages?
+- [ ] Should I use the next:
+  - [ ] React.memo
+  - [ ] useCallback
 - [ ] Use lodash?

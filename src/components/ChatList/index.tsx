@@ -14,6 +14,7 @@ const ChatList: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    // TODO: pagination
     dispatch(getAllChats({ page: 1, size: 15 }));
   }, [dispatch]);
 

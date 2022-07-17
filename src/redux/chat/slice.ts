@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ChatState, Status } from './types';
+import { ChatState } from './types';
 import { getAllChats } from './asyncActions';
+import { Status } from '../types';
 
 const initialState: ChatState = {
   chats: [],
@@ -19,7 +20,7 @@ const chatSlice = createSlice({
       state.selectedChat = action.payload;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers(builder) {
     builder.addCase(getAllChats.pending, (state) => {
       state.status = Status.LOADING;
       state.chats = [];
@@ -30,7 +31,7 @@ const chatSlice = createSlice({
       state.chats = action.payload;
     });
 
-    builder.addCase(getAllChats.rejected, (state, action) => {
+    builder.addCase(getAllChats.rejected, (state) => {
       state.status = Status.ERROR;
       state.chats = [];
     });

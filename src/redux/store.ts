@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import chatReducer from './chat/slice';
+import messageReducer from './message/slice';
 
 export const store = configureStore({
   reducer: {
     chat: chatReducer,
+    message: messageReducer,
   },
   // TODO: is it OK? It is used to prevent an error related to saving Date to the storage.
   // middleware: (getDefaultMiddleware) =>
