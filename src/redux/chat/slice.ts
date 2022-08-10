@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ChatState } from './types';
+import { Status } from '../../@types/status';
 import { getAllChats } from './asyncActions';
-import { Status } from '../types';
+import { ChatState } from './types';
 
 const initialState: ChatState = {
   chats: [],
@@ -13,9 +13,6 @@ const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    setChats(state, action: PayloadAction<Chat[]>) {
-      state.chats = action.payload;
-    },
     setSelectedChat(state, action: PayloadAction<Chat | null>) {
       state.selectedChat = action.payload;
     },
@@ -38,6 +35,6 @@ const chatSlice = createSlice({
   },
 });
 
-export const { setChats, setSelectedChat } = chatSlice.actions;
+export const { setSelectedChat } = chatSlice.actions;
 
 export default chatSlice.reducer;

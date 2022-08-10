@@ -1,8 +1,8 @@
-import { Status } from '../types';
+import { Status } from '../../@types/status';
 
 export type MessageState = {
   messages: Message[];
-  status: Status;
+  messagesStatus: Status;
 };
 
 export type GetMessagesParams = Pagination & {

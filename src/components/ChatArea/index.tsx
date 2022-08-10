@@ -1,8 +1,12 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getMessagesFromChat } from '../../redux/message/asyncActions';
+import TextareaAutosize from 'react-textarea-autosize';
+import sendSvg from '../../assets/img/send.svg';
+import { getMessagesFromChat, sendMessage } from '../../redux/message/asyncActions';
 import { getMessages } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
+import { getCurrentUser } from '../../redux/user/selectors';
+import { createMessageRequest } from '../../services/message.service';
 import MessageItem from '../MessageItem';
 import styles from './ChatArea.module.scss';
 
@@ -11,12 +15,28 @@ type ChatAreaProps = {
 };
 
 const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
-  const messages = useSelector(getMessages);
   const dispatch = useAppDispatch();
+
+  const messages = useSelector(getMessages);
+  const currentUser = useSelector(getCurrentUser);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [value, setValue] = useState('');
+
+  const clearInput = useCallback(() => {
+    setValue('');
+  }, []);
+
+  const handleSend = useCallback(() => {
+    if (value.trim()) {
+      const messageRequest = createMessageRequest(selectedChat.id, currentUser.id, value);
+
+      dispatch(sendMessage(messageRequest));
+
+      clearInput();
+    }
+  }, [dispatch, clearInput, selectedChat, currentUser, value]);
 
   useEffect(() => {
-    // TODO: pagination
     dispatch(getMessagesFromChat({ chatId: selectedChat.id, page: 1, size: 15 }));
   }, [dispatch, selectedChat]);
 
@@ -33,11 +53,35 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
       <div className={styles['messages-wrapper']}>
         <div className={`${styles['messages']} scrollable`}>
           {messages.map((msg) => (
-            <MessageItem key={msg.id} {...msg} />
+            <MessageItem key={msg.date} {...msg} />
           ))}
           <div ref={messagesEndRef} />
         </div>
-        <input type="text" placeholder=" Write a message..." />
+        <div className={styles['input-wrapper']}>
+          <TextareaAutosize
+            cacheMeasurements
+            maxRows={10}
+            className={styles.input}
+            value={value}
+            onChange={(e) => {
+              const currValue = e.target.value;
+              if (currValue !== ' ') {
+                setValue(currValue);
+              }
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+            placeholder=" Write a message..."
+          />
+
+          <div className={styles['send-wrapper']} onClick={handleSend}>
+            <img className="filter-white" src={sendSvg} alt="send" />
+          </div>
+        </div>
       </div>
     </div>
   );

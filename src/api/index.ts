@@ -28,4 +28,8 @@ export const messageApi = {
       },
     });
   },
+
+  sendMessage(messageRequest: MessageRequest): Promise<AxiosResponse<Message>> {
+    return axios.post<Message>(`${HOST_URL}/messages`, messageRequest);
+  },
 };

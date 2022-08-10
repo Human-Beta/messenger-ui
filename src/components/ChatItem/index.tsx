@@ -23,7 +23,7 @@ const getDateString = (date: string): string => {
     return dateMoment.format('ddd');
   }
 
-  return dateMoment.format('hh:mm');
+  return dateMoment.format('HH:mm');
 };
 
 type ChatItemProps = {

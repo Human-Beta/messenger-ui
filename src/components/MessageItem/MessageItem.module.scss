@@ -16,6 +16,34 @@
       color: #7fc67a;
     }
   }
+
+  p {
+    white-space: break-spaces;
+  }
+
+  .loader {
+    display: none !important;
+  }
+
+  &.loading {
+    padding-right: 70px;
+
+    .time {
+      right: 30px;
+    }
+
+    .loader {
+      display: flex !important;
+
+      position: absolute;
+      right: 5px;
+      bottom: 2px;
+    }
+  }
+
+  &.error {
+    background-color: red;
+  }
 }
 
 .time {

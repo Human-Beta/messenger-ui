@@ -1,11 +1,18 @@
-- [ ] Add loaders
+- [x] Add sending a message
+- [x] Add loading while message is not sent
+- [ ] Change structure of state. Should be a map of messages.
+  - key: chatId
+  - value: Message[]
+- [ ] Change last message in the chat when message is sent.
+  - We must use the last message in the chats. Not like now (what we receive when chats is loaded (lastMessage: field))
+  - Should we request last message from the chats for the first loading?
+- [ ] Add skeletons when chats/messages load
+- [ ] Add loaders (pagination)
   - [ ] chats loading
   - [ ] messages loading
-- [ ] Add retry mechanism when smth is not loaded
-- [ ] Store the next in the local storage
-  - [ ] current user
-  - [ ] chats?
-  - [ ] messages?
+- [ ] Add retry mechanism when smth is not loaded (???)
+- [ ] Add shadow for messages
+- [ ] Add sidebar resizing
 - [ ] Should I use the next:
   - [ ] React.memo
   - [ ] useCallback
