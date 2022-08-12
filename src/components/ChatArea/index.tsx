@@ -22,19 +22,15 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState('');
 
-  const clearInput = useCallback(() => {
-    setValue('');
-  }, []);
-
   const handleSend = useCallback(() => {
     if (value.trim()) {
       const messageRequest = createMessageRequest(selectedChat.id, currentUser.id, value);
 
       dispatch(sendMessage(messageRequest));
 
-      clearInput();
+      setValue('');
     }
-  }, [dispatch, clearInput, selectedChat, currentUser, value]);
+  }, [dispatch, setValue, selectedChat, currentUser, value]);
 
   useEffect(() => {
     dispatch(getMessagesFromChat({ chatId: selectedChat.id, page: 1, size: 15 }));
