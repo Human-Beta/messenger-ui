@@ -7,6 +7,7 @@ import { setSelectedChat } from '../../redux/chat/slice';
 
 import avatarSvg from '../../assets/img/avatar.svg';
 import styles from './ChatItem.module.scss';
+import { getLastMessage } from '../../redux/message/selectors';
 
 const { sender, message, time, active } = styles;
 
@@ -32,6 +33,8 @@ type ChatItemProps = {
 
 const ChatItem: React.FC<ChatItemProps> = ({ chat }) => {
   const selectedChat = useSelector(getSelectedChat);
+  // TODO: useCallback?
+  const lastMessage = useSelector(getLastMessage(chat.id));
   const dispatch = useDispatch();
 
   const updateSelectedChat = (chat: Chat) => () => {
@@ -48,8 +51,8 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) => {
       {/* <img src={chat.imageUrl} alt="avatar" /> */}
       <img src={avatarSvg} alt="avatar" />
       <span className={sender}>{chat.name}</span>
-      <span className={message}>{chat.lastMessage.value}</span>
-      <span className={time}>{getDateString(chat.lastMessage.date)}</span>
+      <span className={message}>{lastMessage.value}</span>
+      <span className={time}>{getDateString(lastMessage.date)}</span>
     </div>
   );
 };

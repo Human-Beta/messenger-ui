@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 import sendSvg from '../../assets/img/send.svg';
 import { getMessagesFromChat, sendMessage } from '../../redux/message/asyncActions';
-import { getMessages } from '../../redux/message/selectors';
+import { getChatMessages } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
 import { getCurrentUser } from '../../redux/user/selectors';
 import { createMessageRequest } from '../../services/message.service';
@@ -14,10 +14,12 @@ type ChatAreaProps = {
   selectedChat: Chat;
 };
 
+const PAGE_SIZE = 15;
+
 const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
   const dispatch = useAppDispatch();
 
-  const messages = useSelector(getMessages);
+  const messages = useSelector(getChatMessages);
   const currentUser = useSelector(getCurrentUser);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState('');
@@ -33,7 +35,8 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
   }, [dispatch, setValue, selectedChat, currentUser, value]);
 
   useEffect(() => {
-    dispatch(getMessagesFromChat({ chatId: selectedChat.id, page: 1, size: 15 }));
+    // TODO: pagination, or not here?
+    dispatch(getMessagesFromChat({ chatId: selectedChat.id, page: 1, size: PAGE_SIZE }));
   }, [dispatch, selectedChat]);
 
   useEffect(() => {

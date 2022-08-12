@@ -9,13 +9,15 @@ import styles from './ChatList.module.scss';
 
 const { root } = styles;
 
+const PAGE_SIZE = 15;
+
 const ChatList: React.FC = () => {
   const chats = useSelector(getChats);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     // TODO: pagination
-    dispatch(getAllChats({ page: 1, size: 15 }));
+    dispatch(getAllChats({ page: 1, size: PAGE_SIZE }));
   }, [dispatch]);
 
   return (

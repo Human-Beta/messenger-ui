@@ -24,3 +24,10 @@ export const createMessage = ({ localId, senderId, chatId, value }: MessageReque
     date: moment().toISOString(),
   };
 };
+
+export const getLastMessages = (chats: Chat[]) => {
+  return chats.reduce<{ [key: number]: Message[] }>((map, chat) => {
+    map[chat.id] = [chat.lastMessage];
+    return map;
+  }, {});
+};

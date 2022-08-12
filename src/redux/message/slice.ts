@@ -5,30 +5,34 @@ import { getMessagesFromChat, sendMessage } from './asyncActions';
 import { MessageState } from './types';
 
 const initialState: MessageState = {
-  messages: [],
+  messages: {},
   messagesStatus: Status.LOADING,
 };
 
 const messageSlice = createSlice({
   name: 'message',
   initialState,
-  reducers: {},
+  reducers: {
+    setMessages(state, action) {
+      state.messages = action.payload;
+    },
+  },
   extraReducers(builder) {
     // --- getMessages ---
 
     builder.addCase(getMessagesFromChat.pending, (state) => {
       state.messagesStatus = Status.LOADING;
-      state.messages = [];
     });
 
     builder.addCase(getMessagesFromChat.fulfilled, (state, action) => {
       state.messagesStatus = Status.SUCCESS;
-      state.messages = action.payload.reverse();
+      state.messages[action.meta.arg.chatId] = action.payload.reverse();
     });
 
     builder.addCase(getMessagesFromChat.rejected, (state) => {
       state.messagesStatus = Status.ERROR;
-      state.messages = [];
+      // TODO: what should be here?
+      // state.messages = [];
     });
 
     // --- sendMessage ---
@@ -36,32 +40,46 @@ const messageSlice = createSlice({
     builder.addCase(sendMessage.pending, (state, action) => {
       const newMessage = createMessage(action.meta.arg);
 
-      state.messages.push(newMessage);
+      state.messages[action.meta.arg.chatId].push(newMessage);
     });
 
     builder.addCase(sendMessage.fulfilled, (state, action) => {
       const receivedMessage = action.payload;
-      const message = state.messages.find((msg) => msg.localId === action.meta.arg.localId);
+      // TODO: use map instead? state.messages[action.meta.arg.localId]
+      const message = state.messages[action.meta.arg.chatId].find(
+        (msg) => msg.localId === action.meta.arg.localId,
+      );
 
       if (message) {
         message.id = receivedMessage.id;
         message.date = receivedMessage.date;
         message.status = Status.SUCCESS;
       } else {
-        // TODO: error?
+        // TODO: error? or:
+        // message!.id = receivedMessage.id;
+        // message!.date = receivedMessage.date;
+        // message!.status = Status.SUCCESS;
+        // TODO: logger
+        console.log(`there is no message for id ${action.meta.arg.chatId}`);
       }
     });
 
     builder.addCase(sendMessage.rejected, (state, action) => {
-      const message = state.messages.find((msg) => msg.localId === action.meta.arg.localId);
+      const message = state.messages[action.meta.arg.chatId].find(
+        (msg) => msg.localId === action.meta.arg.localId,
+      );
 
       if (message) {
         message.status = Status.ERROR;
       } else {
         // TODO: error?
+        // TODO: logger
+        console.log(`there is no message for id ${action.meta.arg.chatId}`);
       }
     });
   },
 });
+
+export const { setMessages } = messageSlice.actions;
 
 export default messageSlice.reducer;

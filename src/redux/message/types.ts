@@ -1,7 +1,8 @@
 import { Status } from '../../@types/status';
 
 export type MessageState = {
-  messages: Message[];
+  messages: { [key: number]: Message[] };
+  // TODO: change to the map of messagesStatus
   messagesStatus: Status;
 };
 
