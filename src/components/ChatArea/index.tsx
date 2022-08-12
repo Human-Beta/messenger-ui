@@ -58,6 +58,7 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
         </div>
         <div className={styles['input-wrapper']}>
           <TextareaAutosize
+            autoFocus={true}
             cacheMeasurements
             maxRows={10}
             className={styles.input}
