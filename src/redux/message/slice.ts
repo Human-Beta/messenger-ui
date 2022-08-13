@@ -6,7 +6,7 @@ import { MessageState } from './types';
 
 const initialState: MessageState = {
   messages: {},
-  messagesStatus: Status.LOADING,
+  messagesStatuses: {},
 };
 
 const messageSlice = createSlice({
@@ -20,19 +20,18 @@ const messageSlice = createSlice({
   extraReducers(builder) {
     // --- getMessages ---
 
-    builder.addCase(getMessagesFromChat.pending, (state) => {
-      state.messagesStatus = Status.LOADING;
+    builder.addCase(getMessagesFromChat.pending, (state, action) => {
+      state.messagesStatuses[action.meta.arg.chatId] = Status.LOADING;
     });
 
     builder.addCase(getMessagesFromChat.fulfilled, (state, action) => {
-      state.messagesStatus = Status.SUCCESS;
+      state.messagesStatuses[action.meta.arg.chatId] = Status.SUCCESS;
       state.messages[action.meta.arg.chatId] = action.payload.reverse();
     });
 
-    builder.addCase(getMessagesFromChat.rejected, (state) => {
-      state.messagesStatus = Status.ERROR;
-      // TODO: what should be here?
-      // state.messages = [];
+    builder.addCase(getMessagesFromChat.rejected, (state, action) => {
+      state.messagesStatuses[action.meta.arg.chatId] = Status.ERROR;
+      // TODO: what should be here when an error?
     });
 
     // --- sendMessage ---

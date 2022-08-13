@@ -1,3 +1,4 @@
+import { Status } from '../../@types/status';
 import { RootState } from '../store';
 
 export const getMessages = (state: RootState): { [key: number]: Message[] } =>
@@ -12,3 +13,6 @@ export const getLastMessage =
     const lastIndex = state.message.messages[chatId].length - 1;
     return state.message.messages[chatId][lastIndex];
   };
+
+export const getChatMessagesStatus = (state: RootState): Status =>
+  state.message.messagesStatuses[state.chat.selectedChat!.id];

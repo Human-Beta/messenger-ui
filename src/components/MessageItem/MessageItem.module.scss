@@ -1,11 +1,14 @@
 .root {
   margin-bottom: 5px;
+  border-radius: 10px;
+  max-width: 450px;
+
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
   background-color: white;
   display: inline-block;
   align-self: flex-start;
-  border-radius: 10px;
   padding: 4px 8px 4px 8px;
-  max-width: 450px;
   position: relative;
 
   white-space: pre-wrap;
@@ -46,9 +49,12 @@
 }
 
 .time {
+  position: relative;
+  bottom: -3px;
+
   font-size: 12px !important;
-  color: #b8babc;
   font-weight: 600;
+  color: #b8babc;
 
   -webkit-touch-callout: none;
   -webkit-user-select: none;

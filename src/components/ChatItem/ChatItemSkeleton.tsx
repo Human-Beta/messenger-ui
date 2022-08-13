@@ -1,13 +1,12 @@
 import React from 'react';
 import ContentLoader from 'react-content-loader';
+import { randomWidth } from '../../utils';
 
 const CHAT_NAME_MIN_WIDTH = 70;
 const CHAT_NAME_WIDTH_OFFSET = 100;
 
 const MESSAGE_VALUE_MIN_WIDTH = 100;
 const MESSAGE_VALUE_WIDTH_OFFSET = 200;
-
-const randomWidth = (minWidth: number, offset: number) => minWidth + offset * Math.random();
 
 const ChatItemSkeleton: React.FC = () => {
   const chatNameWidth = randomWidth(CHAT_NAME_MIN_WIDTH, CHAT_NAME_WIDTH_OFFSET);

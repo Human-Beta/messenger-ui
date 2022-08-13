@@ -1,11 +1,13 @@
 import { FC, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { Status } from '../../@types/status';
 import { getMessagesFromChat } from '../../redux/message/asyncActions';
-import { getChatMessages } from '../../redux/message/selectors';
+import { getChatMessages, getChatMessagesStatus } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
 import { ChatAreaInput } from '../ChatAreaInput';
 import MessageItem from '../MessageItem';
 import styles from './ChatArea.module.scss';
+import MessageItemsSkeleton from './MessageItemsSkeleton';
 
 type ChatAreaProps = {
   selectedChat: Chat;
@@ -17,6 +19,7 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
   const dispatch = useAppDispatch();
 
   const messages = useSelector(getChatMessages);
+  const messagesStatus = useSelector(getChatMessagesStatus);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -38,9 +41,11 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
       </div>
       <div className={styles['messages-wrapper']}>
         <div className={`${styles['messages']} scrollable`}>
-          {messages.map((msg) => (
-            <MessageItem key={msg.date} {...msg} />
-          ))}
+          {messagesStatus === Status.LOADING ? (
+            <MessageItemsSkeleton />
+          ) : (
+            messages.map((msg) => <MessageItem key={msg.date} {...msg} />)
+          )}
           <div ref={messagesEndRef} />
         </div>
         <ChatAreaInput selectedChat={selectedChat} />

@@ -3,7 +3,8 @@
 - [x] Change structure of state. Should be a map of messages.
   - [x] { [key: chatId]: Message[] }
 - [x] Change last message in the chat when message is sent
-- [ ] Add skeletons when chats/messages load
+- [x] Add skeletons when chats/messages load
+- [ ] Routers for chats (localhost:3000/@Some_nickname)
 - [ ] Add loaders (pagination)
   - [ ] chats loading
   - [ ] messages loading

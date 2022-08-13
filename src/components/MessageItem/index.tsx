@@ -9,7 +9,7 @@ const { root, message, my, time, loading, error, loader } = styles;
 
 type MessageItemProps = Message;
 
-const loaderSize = 17;
+const loaderSize = 15;
 
 const statusMap: { [key: string]: string } = {
   [Status.LOADING]: loading,
@@ -21,7 +21,6 @@ const MessageItem: React.FC<MessageItemProps> = ({ senderId, value, date, status
   const currentUser = useSelector(getCurrentUser);
 
   return (
-    // TODO: change it 'senderId === 0' to checking if it is the current user
     <div className={`${root} ${statusMap[status] || ''} ${senderId === currentUser.id ? my : ''}`}>
       <span className={message}>{value}</span>
       {/* TODO: add date before messages
