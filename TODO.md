@@ -1,11 +1,8 @@
 - [x] Add sending a message
 - [x] Add loading while message is not sent
-- [ ] Change structure of state. Should be a map of messages.
-  - key: chatId
-  - value: Message[]
-- [ ] Change last message in the chat when message is sent.
-  - We must use the last message in the chats. Not like now (what we receive when chats is loaded (lastMessage: field))
-  - Should we request last message from the chats for the first loading?
+- [x] Change structure of state. Should be a map of messages.
+  - [x] { [key: chatId]: Message[] }
+- [x] Change last message in the chat when message is sent
 - [ ] Add skeletons when chats/messages load
 - [ ] Add loaders (pagination)
   - [ ] chats loading

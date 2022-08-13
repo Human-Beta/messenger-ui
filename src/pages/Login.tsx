@@ -3,9 +3,6 @@ import React from 'react';
 const Login = () => {
   const login = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log('Login');
-    // localStorage.setUser(user)
   };
 
   return (

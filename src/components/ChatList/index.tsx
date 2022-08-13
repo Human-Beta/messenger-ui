@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { getAllChats } from '../../redux/chat/asyncActions';
 
 import { getChats } from '../../redux/chat/selectors';
+import { getMessages } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
 import ChatItem from '../ChatItem';
 import styles from './ChatList.module.scss';
@@ -11,8 +12,14 @@ const { root } = styles;
 
 const PAGE_SIZE = 15;
 
+const getLastMessage = (messages: Message[]) => {
+  const lastIndex = messages.length - 1;
+  return messages[lastIndex];
+};
+
 const ChatList: React.FC = () => {
   const chats = useSelector(getChats);
+  const messages = useSelector(getMessages);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -22,9 +29,18 @@ const ChatList: React.FC = () => {
 
   return (
     <div className={`${root} scrollable`}>
-      {chats.map((chatItem) => (
-        <ChatItem key={chatItem.id} chat={chatItem} />
-      ))}
+      {chats
+        .slice()
+        .sort((c1, c2) => {
+          // TODO: refactor?
+          const lastMessage1 = getLastMessage(messages[c1.id]);
+          const lastMessage2 = getLastMessage(messages[c2.id]);
+
+          return lastMessage2.date.localeCompare(lastMessage1.date);
+        })
+        .map((chatItem) => (
+          <ChatItem key={chatItem.id} chat={chatItem} />
+        ))}
     </div>
   );
 };

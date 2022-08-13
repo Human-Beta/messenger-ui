@@ -33,7 +33,7 @@ type ChatItemProps = {
 
 const ChatItem: React.FC<ChatItemProps> = ({ chat }) => {
   const selectedChat = useSelector(getSelectedChat);
-  // TODO: useCallback?
+  // TODO: useCallback for getLastMessage?
   const lastMessage = useSelector(getLastMessage(chat.id));
   const dispatch = useDispatch();
 

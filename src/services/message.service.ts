@@ -27,7 +27,7 @@ export const createMessage = ({ localId, senderId, chatId, value }: MessageReque
 
 export const getLastMessages = (chats: Chat[]) => {
   return chats.reduce<{ [key: number]: Message[] }>((map, chat) => {
-    map[chat.id] = [chat.lastMessage];
+    map[chat.id] = [chat.initialLastMessage];
     return map;
   }, {});
 };
