@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Status } from '../../@types/status';
 import { getAllChats } from '../../redux/chat/asyncActions';
 
-import { getChats } from '../../redux/chat/selectors';
+import { getChats, getChatsStatus } from '../../redux/chat/selectors';
 import { getMessages } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
 import ChatItem from '../ChatItem';
 import styles from './ChatList.module.scss';
+import { ChatListSkeleton } from './ChatListSkeleton';
 
 const { root } = styles;
 
@@ -19,6 +21,7 @@ const getLastMessage = (messages: Message[]) => {
 
 const ChatList: React.FC = () => {
   const chats = useSelector(getChats);
+  const status = useSelector(getChatsStatus);
   const messages = useSelector(getMessages);
   const dispatch = useAppDispatch();
 
@@ -29,18 +32,20 @@ const ChatList: React.FC = () => {
 
   return (
     <div className={`${root} scrollable`}>
-      {chats
-        .slice()
-        .sort((c1, c2) => {
-          // TODO: refactor?
-          const lastMessage1 = getLastMessage(messages[c1.id]);
-          const lastMessage2 = getLastMessage(messages[c2.id]);
+      {status === Status.LOADING ? (
+        <ChatListSkeleton />
+      ) : (
+        chats
+          .slice()
+          .sort((c1, c2) => {
+            // TODO: refactor?
+            const lastMessage1 = getLastMessage(messages[c1.id]);
+            const lastMessage2 = getLastMessage(messages[c2.id]);
 
-          return lastMessage2.date.localeCompare(lastMessage1.date);
-        })
-        .map((chatItem) => (
-          <ChatItem key={chatItem.id} chat={chatItem} />
-        ))}
+            return lastMessage2.date.localeCompare(lastMessage1.date);
+          })
+          .map((chatItem) => <ChatItem key={chatItem.id} chat={chatItem} />)
+      )}
     </div>
   );
 };
