@@ -21,8 +21,9 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
 
   const messages = useSelector(getChatMessages);
   const currentUser = useSelector(getCurrentUser);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSend = useCallback(() => {
     if (value.trim()) {
@@ -31,16 +32,20 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
       dispatch(sendMessage(messageRequest));
 
       setValue('');
+      inputRef.current?.focus();
     }
   }, [dispatch, setValue, selectedChat, currentUser, value]);
 
   useEffect(() => {
     // TODO: pagination, or not here?
+    // Because it is initial messages loading.
+    // For initial loading we may load just first page.
     dispatch(getMessagesFromChat({ chatId: selectedChat.id, page: 1, size: PAGE_SIZE }));
   }, [dispatch, selectedChat]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView();
+    inputRef.current?.focus();
   }, [selectedChat, messages]);
 
   return (
@@ -58,7 +63,7 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
         </div>
         <div className={styles['input-wrapper']}>
           <TextareaAutosize
-            autoFocus={true}
+            ref={inputRef}
             cacheMeasurements
             maxRows={10}
             className={styles.input}
