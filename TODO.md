@@ -7,6 +7,10 @@
 - [ ] Add loaders (pagination)
   - [ ] chats loading
   - [ ] messages loading
+- [ ] Add arrow for scrolling down
+- [ ] Avatars
+  - [ ] Sidebar
+  - [ ] Chat header
 - [ ] Add retry mechanism when smth is not loaded (???)
 - [ ] Add shadow for messages
 - [ ] Add sidebar resizing

@@ -4,9 +4,12 @@
   display: inline-block;
   align-self: flex-start;
   border-radius: 10px;
-  padding: 4px 50px 4px 8px;
-  max-width: 400px;
+  padding: 4px 8px 4px 8px;
+  max-width: 450px;
   position: relative;
+
+  white-space: pre-wrap;
+  word-break: break-word;
 
   &.my {
     align-self: flex-end;
@@ -17,7 +20,7 @@
     }
   }
 
-  p {
+  span {
     white-space: break-spaces;
   }
 
@@ -26,18 +29,8 @@
   }
 
   &.loading {
-    padding-right: 70px;
-
-    .time {
-      right: 30px;
-    }
-
     .loader {
-      display: flex !important;
-
-      position: absolute;
-      right: 5px;
-      bottom: 2px;
+      display: inline-flex !important;
     }
   }
 
@@ -46,11 +39,13 @@
   }
 }
 
-.time {
-  position: absolute;
-  right: 10px;
-  bottom: 2px;
+.message-info {
+  margin-left: 5px;
 
+  float: right;
+}
+
+.time {
   font-size: 12px !important;
   color: #b8babc;
   font-weight: 600;

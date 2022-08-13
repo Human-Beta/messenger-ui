@@ -32,7 +32,6 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
       dispatch(sendMessage(messageRequest));
 
       setValue('');
-      inputRef.current?.focus();
     }
   }, [dispatch, setValue, selectedChat, currentUser, value]);
 
