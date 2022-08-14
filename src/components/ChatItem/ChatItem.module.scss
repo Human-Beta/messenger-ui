@@ -2,6 +2,10 @@ $img-width: 50px;
 $img-offset: 10px;
 
 .chat {
+  // for tag a
+  text-decoration: none;
+  color: inherit;
+
   border-radius: 15px;
   position: relative;
   display: flex;

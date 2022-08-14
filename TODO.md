@@ -4,17 +4,18 @@
   - [x] { [key: chatId]: Message[] }
 - [x] Change last message in the chat when message is sent
 - [x] Add skeletons when chats/messages load
-- [ ] Routers for chats (localhost:3000/@Some_nickname)
+- [x] Add shadow for messages
+- [x] Routers for chats (localhost:3000/@Some_nickname)
+- [ ] Add arrow in the chat for scrolling down
 - [ ] Add loaders (pagination)
   - [ ] chats loading
   - [ ] messages loading
-- [ ] Add arrow for scrolling down
+- [ ] Lazy loading for components
 - [ ] Avatars
   - [ ] Sidebar
   - [ ] Chat header
-- [ ] Add retry mechanism when smth is not loaded (???)
-- [ ] Add shadow for messages
 - [ ] Add sidebar resizing
+- [ ] Add retry mechanism when smth is not loaded (???)
 - [ ] Should I use the next:
   - [ ] React.memo
   - [ ] useCallback

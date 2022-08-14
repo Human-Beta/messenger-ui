@@ -1,17 +1,17 @@
 import moment from 'moment';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { getSelectedChat } from '../../redux/chat/selectors';
-import { setSelectedChat } from '../../redux/chat/slice';
 
+import { Link } from 'react-router-dom';
 import avatarSvg from '../../assets/img/avatar.svg';
-import styles from './ChatItem.module.scss';
 import { getLastMessage } from '../../redux/message/selectors';
+import styles from './ChatItem.module.scss';
 
 const { sender, message, time, active } = styles;
 
-// TODO: move somewhere
+// TODO: move somewhere (utils?)
 const getDateString = (date: string): string => {
   const dateMoment = moment(date);
   const now = moment();
@@ -35,25 +35,18 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) => {
   const selectedChat = useSelector(getSelectedChat);
   // TODO: useCallback for getLastMessage?
   const lastMessage = useSelector(getLastMessage(chat.id));
-  const dispatch = useDispatch();
-
-  const updateSelectedChat = (chat: Chat) => () => {
-    const currentChat: Chat | null = selectedChat?.id === chat.id ? null : chat;
-
-    dispatch(setSelectedChat(currentChat));
-  };
 
   return (
-    <div
-      className={`${styles.chat} ${chat.id === selectedChat?.id ? active : ''}`}
-      onClick={updateSelectedChat(chat)}>
+    <Link
+      to={`/@${chat.chatName}`}
+      className={`${styles.chat} ${chat.id === selectedChat?.id ? active : ''}`}>
       {/* TODO: get image url from server. Images should be stored on the server */}
       {/* <img src={chat.imageUrl} alt="avatar" /> */}
       <img src={avatarSvg} alt="avatar" />
       <span className={sender}>{chat.name}</span>
       <span className={message}>{lastMessage.value}</span>
       <span className={time}>{getDateString(lastMessage.date)}</span>
-    </div>
+    </Link>
   );
 };
 
