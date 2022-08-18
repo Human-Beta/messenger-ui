@@ -10,9 +10,9 @@ import { createMessageRequest } from '../../services/message.service';
 
 import styles from './ChatAreaInput.module.scss';
 
-type ChatAreaInputProps = {
+interface ChatAreaInputProps {
   selectedChat: Chat;
-};
+}
 
 export const ChatAreaInput: React.FC<ChatAreaInputProps> = ({ selectedChat }) => {
   const dispatch = useAppDispatch();

@@ -27,9 +27,9 @@ const getDateString = (date: string): string => {
   return dateMoment.format('HH:mm');
 };
 
-type ChatItemProps = {
+interface ChatItemProps {
   chat: Chat;
-};
+}
 
 const ChatItem: React.FC<ChatItemProps> = ({ chat }) => {
   const selectedChat = useSelector(getSelectedChat);

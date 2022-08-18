@@ -1,7 +1,7 @@
 import { Status } from '../../@types/status';
 
-export type ChatState = {
+export interface ChatState {
   chats: Chat[];
   status: Status;
   selectedChat: Chat | null;
-};
+}

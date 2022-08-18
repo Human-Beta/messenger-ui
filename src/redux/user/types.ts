@@ -1,3 +1,3 @@
-export type UserState = {
+export interface UserState {
   currentUser: User;
-};
+}

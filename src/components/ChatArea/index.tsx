@@ -9,9 +9,9 @@ import MessageItem from '../MessageItem';
 import styles from './ChatArea.module.scss';
 import MessageItemsSkeleton from './MessageItemsSkeleton';
 
-type ChatAreaProps = {
+interface ChatAreaProps {
   selectedChat: Chat;
-};
+}
 
 const PAGE_SIZE = 15;
 

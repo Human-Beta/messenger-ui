@@ -1,4 +1,4 @@
-type Pagination = {
+interface Pagination {
   page: number;
   size: number;
-};
+}

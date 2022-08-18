@@ -1,6 +1,6 @@
-type User = {
+interface User {
   id: number;
   nickName: string;
   name: string;
   avatarUrl: string;
-};
+}

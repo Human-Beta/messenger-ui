@@ -1,4 +1,4 @@
-type Message = {
+interface Message {
   id?: number;
   localId: number;
   senderId: number;
@@ -6,4 +6,4 @@ type Message = {
   value: string;
   status: Status;
   date: string;
-};
+}
