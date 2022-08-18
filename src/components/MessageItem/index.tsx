@@ -31,7 +31,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ senderId, value, date, status
             msg3
       */}
       <span className={styles['message-info']}>
-        <span className={time}>{moment(date).format('HH:mm')}</span>
+        <span className={`${time} unselectable`}>{moment(date).format('HH:mm')}</span>
         <Oval wrapperClass={loader} color="#00BFFF" height={loaderSize} width={loaderSize} />
       </span>
     </div>

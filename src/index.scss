@@ -9,7 +9,8 @@ $sidebarInitWidth: 450px;
   padding: 0;
 }
 
-img {
+img,
+.unselectable {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */

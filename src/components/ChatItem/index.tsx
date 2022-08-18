@@ -39,7 +39,7 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) => {
   return (
     <Link
       to={`/@${chat.chatName}`}
-      className={`${styles.chat} ${chat.id === selectedChat?.id ? active : ''}`}>
+      className={`${styles.chat} unselectable ${chat.id === selectedChat?.id ? active : ''}`}>
       {/* TODO: get image url from server. Images should be stored on the server */}
       {/* <img src={chat.imageUrl} alt="avatar" /> */}
       <img src={avatarSvg} alt="avatar" />
