@@ -11,6 +11,8 @@
 - [x] Common handler for a 401 error. Redirect on the login page if the error occured. (response interceptor)
 - [ ] Common handler for any error (show a pop-up? response interceptor).
 - [x] Use axios interceptor to add Authorization header for each request
+- [ ] Login validation
+- [ ] Register validation
 - [ ] Add arrow in the chat for scrolling down
 - [ ] Add loaders (pagination)
   - [ ] chats loading

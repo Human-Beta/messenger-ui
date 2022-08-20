@@ -4,6 +4,7 @@ import Chats from './pages/Chats';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Register from './pages/Register';
+import AuthRedirect from './AuthRedirect';
 import RequireAuth from './RequireAuth';
 
 const App: React.FC = () => {
@@ -20,29 +21,35 @@ const App: React.FC = () => {
   return (
     <div className="app">
       <Routes>
-        <Route
-          index
-          element={
-            <RequireAuth>
-              <Chats />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/@:chatName"
-          element={
-            <RequireAuth>
-              <Chats />
-            </RequireAuth>
-          }
-        />
+        {['/', '/@:chatName'].map((path) => (
+          <Route
+            key={path}
+            path={path}
+            element={
+              <RequireAuth>
+                <Chats />
+              </RequireAuth>
+            }
+          />
+        ))}
         {/* TODO: bug in router. Cannot use @ in the children's path*/}
         {/* <Route path="/" element={<RequireAuth />}>
           <Route index element={<Chats />} />
           <Route path="@:chatName" element={<Chats />} />
         </Route> */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        {/* TODO: it does not work as well! React router is a shit!!! */}
+        {/* <Route
+          path="/(@:chatName)?"
+          element={
+            <RequireAuth>
+              <Chats />
+            </RequireAuth>
+          }
+        /> */}
+        <Route path="/" element={<AuthRedirect />}>
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+        </Route>
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </div>

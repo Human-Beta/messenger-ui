@@ -20,13 +20,6 @@ const Login: FC = () => {
     }
   };
 
-  // TODO: do i need it?
-  // useEffect(() => {
-  //   if (getAccessToken()) {
-  //     navigate('/');
-  //   }
-  // }, [navigate, getAccessToken()]);
-
   return (
     <form onSubmit={login} className="login" method="POST">
       <input
