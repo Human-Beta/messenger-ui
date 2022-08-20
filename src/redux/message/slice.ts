@@ -44,7 +44,7 @@ const messageSlice = createSlice({
 
     builder.addCase(sendMessage.fulfilled, (state, action) => {
       const receivedMessage = action.payload;
-      // TODO: use map instead? state.messages[action.meta.arg.localId]
+
       const message = state.messages[action.meta.arg.chatId].find(
         (msg) => msg.localId === action.meta.arg.localId,
       );
@@ -54,10 +54,6 @@ const messageSlice = createSlice({
         message.date = receivedMessage.date;
         message.status = Status.SUCCESS;
       } else {
-        // TODO: error? or:
-        // message!.id = receivedMessage.id;
-        // message!.date = receivedMessage.date;
-        // message!.status = Status.SUCCESS;
         // TODO: logger
         console.log(`there is no message for id ${action.meta.arg.chatId}`);
       }
