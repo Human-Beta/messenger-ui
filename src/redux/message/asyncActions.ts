@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { messageApi } from '../../api';
+import messageApi from '../../api/message';
 import { GetMessagesParams } from './types';
 
 export const getMessagesFromChat = createAsyncThunk<Message[], GetMessagesParams>(

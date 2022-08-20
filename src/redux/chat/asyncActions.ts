@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { chatApi } from '../../api';
+import chatApi from '../../api/chat';
 import { getLastMessages } from '../../services/message.service';
 import { setMessages } from '../message/slice';
 
