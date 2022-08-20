@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Status } from '../@types/status';
 import Background from '../components/Background';
@@ -7,12 +7,13 @@ import ChatArea from '../components/ChatArea';
 import Sidebar from '../components/Sidebar';
 import { getChats, getChatsStatus, getSelectedChat } from '../redux/chat/selectors';
 import { setSelectedChat } from '../redux/chat/slice';
+import { useAppDispatch } from '../redux/store';
 
 const findChat = (chats: Chat[], chatName: string | undefined) =>
   chats.find((chat) => chat.chatName === chatName);
 
 const Chats: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const chats = useSelector(getChats);
   const selectedChat = useSelector(getSelectedChat);
@@ -34,7 +35,7 @@ const Chats: React.FC = () => {
     if (foundChat) {
       dispatch(setSelectedChat(foundChat));
     } else {
-      // TODO: change to log
+      // TODO: change to log.error
       console.error(`no chat with chatName == ${chatName}`);
       navigate('/');
     }

@@ -4,9 +4,11 @@ import Chats from './pages/Chats';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Register from './pages/Register';
+import { RequireAuth } from './RequireAuth';
 
 const App: React.FC = () => {
   const navigate = useNavigate();
+
   useEffect(() => {
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {
@@ -18,8 +20,27 @@ const App: React.FC = () => {
   return (
     <div className="app">
       <Routes>
-        <Route path="/" element={<Chats />} />
-        <Route path="/@:chatName" element={<Chats />} />
+        <Route
+          index
+          element={
+            <RequireAuth>
+              <Chats />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/@:chatName"
+          element={
+            <RequireAuth>
+              <Chats />
+            </RequireAuth>
+          }
+        />
+        {/* TODO: bug in router. Cannot use @ in the children's path*/}
+        {/* <Route path="/" element={<RequireAuth />}>
+          <Route index element={<Chats />} />
+          <Route path="@:chatName" element={<Chats />} />
+        </Route> */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/*" element={<NotFound />} />

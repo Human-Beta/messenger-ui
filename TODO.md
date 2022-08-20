@@ -6,21 +6,20 @@
 - [x] Add skeletons when chats/messages load
 - [x] Add shadow for messages
 - [x] Routers for chats (localhost:3000/@Some_nickname)
-- [ ] On app loading add verifying if access_token is valid
-  - [ ] Add request for the current user
-- [ ] Common handler for a 401 error. Redirect on the login page if the error occured. (response interceptor?)
-  - [ ] Common handler for any error (show a pop-up?).
-- [ ] Use axios interceptor to add Authorization header for each request
+- [x] On app loading add verifying if access_token is valid
+  - [x] Add request for the current user
+- [x] Common handler for a 401 error. Redirect on the login page if the error occured. (response interceptor)
+- [ ] Common handler for any error (show a pop-up? response interceptor).
+- [x] Use axios interceptor to add Authorization header for each request
 - [ ] Add arrow in the chat for scrolling down
 - [ ] Add loaders (pagination)
   - [ ] chats loading
   - [ ] messages loading
 - [ ] Lazy loading for components
 - [ ] Avatars
-  - [ ] Sidebar
+  - [ ] Chat item
   - [ ] Chat header
 - [ ] Add sidebar resizing
-- [ ] Add retry mechanism when smth is not loaded (???)
 - [ ] Should I use the next:
   - [ ] React.memo
   - [ ] useCallback

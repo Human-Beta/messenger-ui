@@ -5,7 +5,7 @@ import sendSvg from '../../assets/img/send.svg';
 import { sendMessage } from '../../redux/message/asyncActions';
 import { getChatMessages } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
-import { getCurrentUser } from '../../redux/user/selectors';
+import { getUser } from '../../redux/user/selectors';
 import { createMessageRequest } from '../../services/message.service';
 
 import styles from './ChatAreaInput.module.scss';
@@ -14,16 +14,19 @@ interface ChatAreaInputProps {
   selectedChat: Chat;
 }
 
+// TODO: use export default IN THE ALL PLACES
 export const ChatAreaInput: React.FC<ChatAreaInputProps> = ({ selectedChat }) => {
   const dispatch = useAppDispatch();
   const [value, setValue] = useState('');
-  const currentUser = useSelector(getCurrentUser);
+  const currentUser = useSelector(getUser);
   const messages = useSelector(getChatMessages);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSend = useCallback(() => {
     if (value.trim()) {
-      const messageRequest = createMessageRequest(selectedChat.id, currentUser.id, value);
+      // TODO: fix => currentUser!.id
+      // TODO: do I need to send currentUser.id?
+      const messageRequest = createMessageRequest(selectedChat.id, currentUser!.id, value);
 
       dispatch(sendMessage(messageRequest));
 

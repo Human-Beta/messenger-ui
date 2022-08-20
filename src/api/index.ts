@@ -1,11 +1,13 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import config from '../config';
+import { Auth } from '../redux/auth/types';
+import axios from '../AxiosInterceptor';
 
-// TODO: url should be taken from some property depends on env
-const HOST_URL = 'http://localhost:8080';
+// TODO: separate api files
 
 export const chatApi = {
   async getAllChats(page: number, size: number): Promise<AxiosResponse<Chat[]>> {
-    return axios.get<Chat[]>(`${HOST_URL}/chats`, {
+    return axios.get<Chat[]>('/chats', {
       params: {
         page: page || 1,
         size: size || 15,
@@ -20,7 +22,7 @@ export const messageApi = {
     page: number,
     size: number,
   ): Promise<AxiosResponse<Message[]>> {
-    return axios.get<Message[]>(`${HOST_URL}/messages`, {
+    return axios.get<Message[]>('/messages', {
       params: {
         chatId,
         page: page || 1,
@@ -30,6 +32,27 @@ export const messageApi = {
   },
 
   sendMessage(messageRequest: MessageRequest): Promise<AxiosResponse<Message>> {
-    return axios.post<Message>(`${HOST_URL}/messages`, messageRequest);
+    return axios.post<Message>('/messages', messageRequest);
+  },
+};
+
+export const authApi = {
+  getToken(username: string, password: string): Promise<AxiosResponse<Auth>> {
+    return axios.post<Auth>('/oauth/token', null, {
+      headers: {
+        Authorization: `Basic ${config.local.BASIC_AUTH_HEADER}`,
+      },
+      params: {
+        grant_type: 'password',
+        username,
+        password,
+      },
+    });
+  },
+};
+
+export const userApi = {
+  getCurrentUser(): Promise<AxiosResponse<User>> {
+    return axios.get('/users/current');
   },
 };

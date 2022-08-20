@@ -2,7 +2,7 @@ import moment from 'moment';
 import { Oval } from 'react-loader-spinner';
 import { useSelector } from 'react-redux';
 import { Status } from '../../@types/status';
-import { getCurrentUser } from '../../redux/user/selectors';
+import { getUser } from '../../redux/user/selectors';
 import styles from './MessageItem.module.scss';
 
 const { root, message, my, time, loading, error, loader } = styles;
@@ -18,10 +18,11 @@ const statusMap: { [key: string]: string } = {
 };
 
 const MessageItem: React.FC<MessageItemProps> = ({ senderId, value, date, status }) => {
-  const currentUser = useSelector(getCurrentUser);
+  const currentUser = useSelector(getUser);
 
   return (
-    <div className={`${root} ${statusMap[status] || ''} ${senderId === currentUser.id ? my : ''}`}>
+    // TODO: fix currentUser!.id. '!' symbol
+    <div className={`${root} ${statusMap[status] || ''} ${senderId === currentUser!.id ? my : ''}`}>
       <span className={message}>{value}</span>
       {/* TODO: add date before messages
         For example, if messages from 5th of May, than before ones should be placed 

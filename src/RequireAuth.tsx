@@ -1,0 +1,28 @@
+import { FC, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { LOGOUT_USER_ACTION, useAppDispatch } from './redux/store';
+import { getCurrentUser } from './redux/user/asyncActions';
+import { getAccessToken } from './services/localStorage.service';
+
+export const RequireAuth: FC<Props> = ({ children }) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const [isUserRetreived, setUserRetreived] = useState(false);
+
+  useEffect(() => {
+    const accessToken = getAccessToken();
+
+    if (accessToken) {
+      dispatch(getCurrentUser()).then(() => {
+        setUserRetreived(true);
+      });
+    } else {
+      dispatch(LOGOUT_USER_ACTION);
+      navigate('/login');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+
+  return <>{isUserRetreived && children}</>;
+};
