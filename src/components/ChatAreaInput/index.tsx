@@ -14,8 +14,7 @@ interface ChatAreaInputProps {
   selectedChat: Chat;
 }
 
-// TODO: use export default IN THE ALL PLACES
-export const ChatAreaInput: React.FC<ChatAreaInputProps> = ({ selectedChat }) => {
+const ChatAreaInput: React.FC<ChatAreaInputProps> = ({ selectedChat }) => {
   const dispatch = useAppDispatch();
   const [value, setValue] = useState('');
   const currentUser = useSelector(getUser);
@@ -67,3 +66,5 @@ export const ChatAreaInput: React.FC<ChatAreaInputProps> = ({ selectedChat }) =>
     </div>
   );
 };
+
+export default ChatAreaInput;

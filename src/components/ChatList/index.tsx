@@ -8,7 +8,7 @@ import { getMessages } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
 import ChatItem from '../ChatItem';
 import styles from './ChatList.module.scss';
-import { ChatListSkeleton } from './ChatListSkeleton';
+import ChatListSkeleton from './ChatListSkeleton';
 
 const { root } = styles;
 

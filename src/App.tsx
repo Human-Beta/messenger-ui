@@ -4,7 +4,7 @@ import Chats from './pages/Chats';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Register from './pages/Register';
-import { RequireAuth } from './RequireAuth';
+import RequireAuth from './RequireAuth';
 
 const App: React.FC = () => {
   const navigate = useNavigate();

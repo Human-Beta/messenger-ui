@@ -4,7 +4,7 @@ import { LOGOUT_USER_ACTION, useAppDispatch } from './redux/store';
 import { getCurrentUser } from './redux/user/asyncActions';
 import { getAccessToken } from './services/localStorage.service';
 
-export const RequireAuth: FC<Props> = ({ children }) => {
+const RequireAuth: FC<Props> = ({ children }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -26,3 +26,5 @@ export const RequireAuth: FC<Props> = ({ children }) => {
 
   return <>{isUserRetreived && children}</>;
 };
+
+export default RequireAuth;

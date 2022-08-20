@@ -4,7 +4,7 @@ import { Status } from '../../@types/status';
 import { getMessagesFromChat } from '../../redux/message/asyncActions';
 import { getChatMessages, getChatMessagesStatus } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
-import { ChatAreaInput } from '../ChatAreaInput';
+import ChatAreaInput from '../ChatAreaInput';
 import MessageItem from '../MessageItem';
 import styles from './ChatArea.module.scss';
 import MessageItemsSkeleton from './MessageItemsSkeleton';
