@@ -21,8 +21,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ senderId, value, date, status
   const currentUser = useSelector(getUser);
 
   return (
-    // TODO: fix currentUser!.id. '!' symbol
-    <div className={`${root} ${statusMap[status] || ''} ${senderId === currentUser!.id ? my : ''}`}>
+    <div className={`${root} ${statusMap[status] || ''} ${senderId === currentUser.id ? my : ''}`}>
       <span className={message}>{value}</span>
       {/* TODO: add date before messages
         For example, if messages from 5th of May, than before ones should be placed 

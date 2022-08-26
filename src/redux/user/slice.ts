@@ -2,10 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getCurrentUser } from './asyncActions';
 import { UserState } from './types';
 
-const initialState: UserState = {
-  // TODO: what to set here? The current user is always presented
-  currentUser: null,
-};
+const initialState: UserState = {} as unknown as UserState;
 
 const userSlice = createSlice({
   name: 'user',

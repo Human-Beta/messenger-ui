@@ -23,9 +23,7 @@ const ChatAreaInput: React.FC<ChatAreaInputProps> = ({ selectedChat }) => {
 
   const handleSend = useCallback(() => {
     if (value.trim()) {
-      // TODO: fix => currentUser!.id
-      // TODO: do I need to send currentUser.id?
-      const messageRequest = createMessageRequest(selectedChat.id, currentUser!.id, value);
+      const messageRequest = createMessageRequest(selectedChat.id, currentUser.id, value);
 
       dispatch(sendMessage(messageRequest));
 

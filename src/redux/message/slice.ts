@@ -46,6 +46,8 @@ const messageSlice = createSlice({
       const receivedMessage = action.payload;
 
       const message = state.messages[action.meta.arg.chatId].find(
+        // TODO: maybe do not use localId == new Date(), but just action.meta.requestId instead
+        // and do not send localId to the server
         (msg) => msg.localId === action.meta.arg.localId,
       );
 
