@@ -1,5 +1,5 @@
-import React, { FC, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { FC, useCallback, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { getToken } from '../redux/auth/asyncActions';
 import { useAppDispatch } from '../redux/store';
 
@@ -7,35 +7,76 @@ const Login: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [nickname, setNickname] = useState('');
-  const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [nicknameMsg, setNicknameMsg] = useState('');
+  const [passwordMsg, setPasswordMsg] = useState('');
+
+  const nicknameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  const resetValidationMsgs = useCallback(() => {
+    setErrorMsg('');
+    setNicknameMsg('');
+    setPasswordMsg('');
+  }, []);
+
+  const validate = useCallback((nickname: string, password: string) => {
+    let result = true;
+
+    nickname = nickname.trim();
+    password = password.trim();
+
+    if (!nickname) {
+      setNicknameMsg('Nickname should not be empty');
+      result = false;
+    }
+
+    if (!password) {
+      setPasswordMsg('Password should not be empty');
+      result = false;
+    }
+
+    return result;
+  }, []);
 
   const login = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (nickname && password) {
-      dispatch(getToken({ nickname, password })).then(() => {
-        navigate('/');
-      });
+    resetValidationMsgs();
+
+    const nickname = nicknameRef.current!.value;
+    const password = passwordRef.current!.value;
+
+    if (!validate(nickname, password)) {
+      return;
     }
+
+    dispatch(getToken({ nickname, password }))
+      .unwrap()
+      .then(() => {
+        navigate('/');
+      })
+      .catch((resp) => {
+        if (resp.status === 400 && resp.error_description === 'Bad credentials') {
+          setErrorMsg('There is no user with these nickname and password');
+        }
+      });
   };
 
   return (
-    <form onSubmit={login} className="login" method="POST">
-      <input
-        type="text"
-        placeholder="Nickname"
-        name="nickname"
-        onChange={(e) => setNickname(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        name="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button>Login</button>
-    </form>
+    <div className="login-wrapper">
+      <form onSubmit={login} className="login" method="POST">
+        <p className="error">{errorMsg}</p>
+        <span className="error">{nicknameMsg}</span>
+        <input type="text" placeholder="Nickname" name="nickname" ref={nicknameRef} />
+        <span className="error">{passwordMsg}</span>
+        <input type="password" placeholder="Password" name="password" ref={passwordRef} />
+        <button>Login</button>
+        <p className="redirect">
+          Not a member? <Link to="/register">Signup now</Link>
+        </p>
+      </form>
+    </div>
   );
 };
 

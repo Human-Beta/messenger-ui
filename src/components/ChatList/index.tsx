@@ -10,7 +10,7 @@ import ChatItem from '../ChatItem';
 import styles from './ChatList.module.scss';
 import ChatListSkeleton from './ChatListSkeleton';
 
-const { root } = styles;
+const { root, empty } = styles;
 
 const PAGE_SIZE = 15;
 
@@ -34,7 +34,7 @@ const ChatList: React.FC = () => {
     <div className={`${root} scrollable`}>
       {status === Status.LOADING ? (
         <ChatListSkeleton />
-      ) : (
+      ) : chats.length ? (
         chats
           .slice()
           .sort((c1, c2) => {
@@ -45,6 +45,8 @@ const ChatList: React.FC = () => {
             return lastMessage2.date.localeCompare(lastMessage1.date);
           })
           .map((chatItem) => <ChatItem key={chatItem.id} chat={chatItem} />)
+      ) : (
+        <p className={empty}>You have no friends yet (</p>
       )}
     </div>
   );
