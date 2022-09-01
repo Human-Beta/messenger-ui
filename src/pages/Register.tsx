@@ -26,6 +26,7 @@ const Register = () => {
     setPasswordConfirmError('');
   }, []);
 
+  // TODO: validation service
   const validate = useCallback(
     (nickname: string, name: string, pwd: string, pwdConfirm: string) => {
       let result = true;

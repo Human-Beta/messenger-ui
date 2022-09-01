@@ -1,10 +1,8 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-
-import { getSelectedChat } from '../../redux/chat/selectors';
-
 import { Link } from 'react-router-dom';
 import avatarSvg from '../../assets/img/avatar.svg';
+import { getSelectedChat } from '../../redux/chat/selectors';
 import { getLastMessage } from '../../redux/message/selectors';
 import { getDateString } from '../../utils';
 import styles from './ChatItem.module.scss';

@@ -1,5 +1,7 @@
 import moment from 'moment';
 
+// TODO: separate files
+
 export const randomWidth = (minWidth: number, offset: number) => minWidth + offset * Math.random();
 
 export const getDateString = (date: string): string => {

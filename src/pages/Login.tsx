@@ -20,6 +20,7 @@ const Login: FC = () => {
     setPasswordMsg('');
   }, []);
 
+  // TODO: validation service
   const validate = useCallback((nickname: string, password: string) => {
     let result = true;
 

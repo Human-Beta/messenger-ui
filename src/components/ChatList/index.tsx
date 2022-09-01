@@ -2,7 +2,6 @@ import { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Status } from '../../@types/status';
 import { getAllChats } from '../../redux/chat/asyncActions';
-
 import { getChats, getChatsStatus } from '../../redux/chat/selectors';
 import { getMessages } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
