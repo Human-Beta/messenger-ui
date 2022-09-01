@@ -13,11 +13,13 @@
 - [x] Use axios interceptor to add Authorization header for each request
 - [x] Login validation
 - [x] Register validation
+- [ ] Load all messages and chat when socket connection with server is dropped and then established again
 - [ ] Add 'loaded' flag for the chats to prevent loading on each chat changing
 - [ ] Add arrow in the chat for scrolling down
 - [ ] Add loaders (pagination)
   - [ ] chats loading
   - [ ] messages loading
+- [ ] Move some dependencies to the devDependencies (@types/...)
 - [ ] Lazy loading for components
 - [ ] Avatars
   - [ ] Chat item

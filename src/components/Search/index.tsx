@@ -1,19 +1,19 @@
-import React from 'react';
-import styles from './Search.module.scss';
-import searchSvg from '../../assets/img/search.svg';
-import logoutImg from '../../assets/img/logout.svg';
-import { LOGOUT_USER_ACTION, useAppDispatch } from '../../redux/store';
+import { ChangeEvent, FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logoutImg from '../../assets/img/logout.svg';
+import searchSvg from '../../assets/img/search.svg';
+import { LOGOUT_USER_ACTION, useAppDispatch } from '../../redux/store';
+import styles from './Search.module.scss';
 
 const { root, input_wrapper, logout } = styles;
 
-const Search: React.FC = () => {
+const Search: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [inputValue, setInputValue] = React.useState<string>('');
+  const [inputValue, setInputValue] = useState<string>('');
 
-  const updateInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const updateInputValue = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
 

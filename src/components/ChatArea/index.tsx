@@ -13,7 +13,7 @@ interface ChatAreaProps {
   selectedChat: Chat;
 }
 
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 100;
 
 const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
   const dispatch = useAppDispatch();

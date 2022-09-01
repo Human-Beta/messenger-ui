@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { FC } from 'react';
 import { Oval } from 'react-loader-spinner';
 import { useSelector } from 'react-redux';
 import { Status } from '../../@types/status';
@@ -17,7 +18,7 @@ const statusMap: { [key: string]: string } = {
   [Status.ERROR]: error,
 };
 
-const MessageItem: React.FC<MessageItemProps> = ({ senderId, value, date, status }) => {
+const MessageItem: FC<MessageItemProps> = ({ senderId, value, date, status }) => {
   const currentUser = useSelector(getUser);
 
   return (

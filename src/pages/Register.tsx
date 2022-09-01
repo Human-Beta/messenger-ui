@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import { FormEvent, useCallback, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
 import { registerUser } from '../redux/user/asyncActions';
@@ -65,35 +65,38 @@ const Register = () => {
     [],
   );
 
-  const register = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const register = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
 
-    resetValidationMsgs();
+      resetValidationMsgs();
 
-    const nickname = nicknameRef.current!.value;
-    const name = nameRef.current!.value;
-    const password = passwordRef.current!.value;
-    const passwordConfirm = passwordConfirmRef.current!.value;
+      const nickname = nicknameRef.current!.value;
+      const name = nameRef.current!.value;
+      const password = passwordRef.current!.value;
+      const passwordConfirm = passwordConfirmRef.current!.value;
 
-    if (!validate(nickname, name, password, passwordConfirm)) {
-      return;
-    }
+      if (!validate(nickname, name, password, passwordConfirm)) {
+        return;
+      }
 
-    dispatch(registerUser({ nickname, name, password }))
-      .unwrap()
-      .then(() => {
-        navigate('/login');
-      })
-      .catch((resp) => {
-        if (resp.status === 409) {
-          setErrorMsg(resp.message);
-        }
+      dispatch(registerUser({ nickname, name, password }))
+        .unwrap()
+        .then(() => {
+          navigate('/login');
+        })
+        .catch((resp) => {
+          if (resp.status === 409) {
+            setErrorMsg(resp.message);
+          }
 
-        // TODO: validation from server?
+          // TODO: validation from server?
 
-        console.log('err', resp);
-      });
-  };
+          console.log('err', resp);
+        });
+    },
+    [dispatch, navigate, resetValidationMsgs, validate],
+  );
 
   return (
     <div className="register-wrapper">

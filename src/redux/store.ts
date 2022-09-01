@@ -1,6 +1,7 @@
 import { AnyAction, combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { removeAccessToken } from '../services/localStorage.service';
+import { removeSocketIfPresent } from '../services/socket.service';
 import authReducer from './auth/slice';
 import chatReducer from './chat/slice';
 import { ChatState } from './chat/types';
@@ -33,6 +34,8 @@ const rootReducer: Reducer<
 > = (state: RootState | undefined, action: AnyAction) => {
   if (action.type === USER_LOGOUT_ACTION_TYPE) {
     removeAccessToken();
+    removeSocketIfPresent();
+
     state = undefined;
   }
 

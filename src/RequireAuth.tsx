@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { LOGOUT_USER_ACTION, useAppDispatch } from './redux/store';
 import { getCurrentUser } from './redux/user/asyncActions';
 import { getAccessToken } from './services/localStorage.service';
+import { initSocketAndOpen } from './services/socket.service';
 
 const RequireAuth: FC<Props> = ({ children }) => {
   const dispatch = useAppDispatch();
@@ -15,6 +16,8 @@ const RequireAuth: FC<Props> = ({ children }) => {
 
     if (accessToken) {
       dispatch(getCurrentUser()).then(() => {
+        initSocketAndOpen();
+
         setUserRetreived(true);
       });
     } else {

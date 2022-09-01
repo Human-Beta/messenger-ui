@@ -1,6 +1,6 @@
-import React from 'react';
+import { FC } from 'react';
 
-const NotFound: React.FC = () => {
+const NotFound: FC = () => {
   return <h1 style={{ margin: '0px auto' }}>404 Not Found</h1>;
 };
 

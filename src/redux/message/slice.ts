@@ -16,6 +16,11 @@ const messageSlice = createSlice({
     setMessages(state, action) {
       state.messages = action.payload;
     },
+    addMessage(state, action) {
+      const message: Message = action.payload;
+
+      state.messages[message.chatId].push(message);
+    },
   },
   extraReducers(builder) {
     // --- getMessages ---
@@ -77,6 +82,6 @@ const messageSlice = createSlice({
   },
 });
 
-export const { setMessages } = messageSlice.actions;
+export const { addMessage, setMessages } = messageSlice.actions;
 
 export default messageSlice.reducer;

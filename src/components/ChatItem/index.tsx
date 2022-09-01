@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import { useSelector } from 'react-redux';
 
 import { getSelectedChat } from '../../redux/chat/selectors';
@@ -15,7 +15,7 @@ interface ChatItemProps {
   chat: Chat;
 }
 
-const ChatItem: React.FC<ChatItemProps> = ({ chat }) => {
+const ChatItem: FC<ChatItemProps> = ({ chat }) => {
   const selectedChat = useSelector(getSelectedChat);
   // TODO: useCallback for getLastMessage?
   const lastMessage = useSelector(getLastMessage(chat.id));

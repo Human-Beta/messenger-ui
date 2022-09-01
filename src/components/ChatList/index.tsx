@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Status } from '../../@types/status';
 import { getAllChats } from '../../redux/chat/asyncActions';
@@ -19,7 +19,7 @@ const getLastMessage = (messages: Message[]) => {
   return messages[lastIndex];
 };
 
-const ChatList: React.FC = () => {
+const ChatList: FC = () => {
   const chats = useSelector(getChats);
   const status = useSelector(getChatsStatus);
   const messages = useSelector(getMessages);

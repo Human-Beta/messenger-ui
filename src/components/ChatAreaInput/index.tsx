@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 import sendSvg from '../../assets/img/send.svg';
@@ -14,7 +14,7 @@ interface ChatAreaInputProps {
   selectedChat: Chat;
 }
 
-const ChatAreaInput: React.FC<ChatAreaInputProps> = ({ selectedChat }) => {
+const ChatAreaInput: FC<ChatAreaInputProps> = ({ selectedChat }) => {
   const dispatch = useAppDispatch();
   const [value, setValue] = useState('');
   const currentUser = useSelector(getUser);
@@ -57,7 +57,6 @@ const ChatAreaInput: React.FC<ChatAreaInputProps> = ({ selectedChat }) => {
         }}
         placeholder=" Write a message..."
       />
-
       <div className={styles['send-wrapper']} onClick={handleSend}>
         <img className="filter-white" src={sendSvg} alt="send" />
       </div>

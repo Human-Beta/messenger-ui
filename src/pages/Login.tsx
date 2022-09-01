@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useRef, useState } from 'react';
+import { FC, FormEvent, useCallback, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getToken } from '../redux/auth/asyncActions';
 import { useAppDispatch } from '../redux/store';
@@ -39,29 +39,32 @@ const Login: FC = () => {
     return result;
   }, []);
 
-  const login = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const login = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
 
-    resetValidationMsgs();
+      resetValidationMsgs();
 
-    const nickname = nicknameRef.current!.value;
-    const password = passwordRef.current!.value;
+      const nickname = nicknameRef.current!.value;
+      const password = passwordRef.current!.value;
 
-    if (!validate(nickname, password)) {
-      return;
-    }
+      if (!validate(nickname, password)) {
+        return;
+      }
 
-    dispatch(getToken({ nickname, password }))
-      .unwrap()
-      .then(() => {
-        navigate('/');
-      })
-      .catch((resp) => {
-        if (resp.status === 400 && resp.error_description === 'Bad credentials') {
-          setErrorMsg('There is no user with these nickname and password');
-        }
-      });
-  };
+      dispatch(getToken({ nickname, password }))
+        .unwrap()
+        .then(() => {
+          navigate('/');
+        })
+        .catch((resp) => {
+          if (resp.status === 400 && resp.error_description === 'Bad credentials') {
+            setErrorMsg('There is no user with these nickname and password');
+          }
+        });
+    },
+    [dispatch, navigate, validate, resetValidationMsgs],
+  );
 
   return (
     <div className="login-wrapper">

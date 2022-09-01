@@ -1,7 +1,8 @@
-import Search from '../Search';
+import { FC } from 'react';
 import ChatList from '../ChatList';
+import Search from '../Search';
 
-const Sidebar: React.FC = () => {
+const Sidebar: FC = () => {
   return (
     <div className="sidebar">
       <Search />

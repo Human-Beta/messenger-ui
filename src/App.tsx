@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
+import AuthRedirect from './AuthRedirect';
 import Chats from './pages/Chats';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Register from './pages/Register';
-import AuthRedirect from './AuthRedirect';
 import RequireAuth from './RequireAuth';
 
-const App: React.FC = () => {
+const App: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
