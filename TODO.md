@@ -13,19 +13,16 @@
 - [x] Use axios interceptor to add Authorization header for each request
 - [x] Login validation
 - [x] Register validation
-- [ ] Load all messages and chat when socket connection with server is dropped and then established again
+- [ ] Load all messages and chats when socket connection with server is dropped and then established again
 - [ ] Add 'loaded' flag for the chats to prevent loading on each chat changing
-- [ ] Add arrow in the chat for scrolling down
-- [ ] Add loaders (pagination)
+- [x] Add arrow in the chat for scrolling down
+- [ ] Implement searching for users/chats in the Search component
+- [ ] Implement loaders (pagination)
   - [ ] chats loading
   - [ ] messages loading
-- [ ] Move some dependencies to the devDependencies (@types/...)
-- [ ] Lazy loading for components
 - [ ] Avatars
   - [ ] Chat item
   - [ ] Chat header
+- [ ] Move some dependencies to the devDependencies (@types/...)
+- [ ] Lazy loading for components
 - [ ] Add sidebar resizing
-- [ ] Should I use the next:
-  - [ ] React.memo
-  - [ ] useCallback
-- [ ] Use lodash?
