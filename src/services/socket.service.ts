@@ -46,7 +46,7 @@ export const initSocket = (autoConnect: boolean | void) => {
   }
 
   // TODO: url from props
-  socket = io('http://localhost:8888/message', {
+  socket = io('http://localhost:8888/messenger', {
     autoConnect,
     transports: ['polling', 'websocket'],
     query: {
