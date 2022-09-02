@@ -15,7 +15,6 @@ interface ChatItemProps {
 
 const ChatItem: FC<ChatItemProps> = ({ chat }) => {
   const selectedChat = useSelector(getSelectedChat);
-  // TODO: useCallback for getLastMessage?
   const lastMessage = useSelector(getLastMessage(chat.id));
 
   return (

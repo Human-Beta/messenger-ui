@@ -1,4 +1,5 @@
 import { Status } from '../../@types/status';
+import messageUtils from '../../utils/message.utils';
 import { RootState } from '../store';
 
 export const getMessages = (state: RootState): { [key: number]: Message[] } =>
@@ -9,10 +10,8 @@ export const getChatMessages = (state: RootState): Message[] =>
 
 export const getLastMessage =
   (chatId: number) =>
-  (state: RootState): Message => {
-    const lastIndex = state.message.messages[chatId].length - 1;
-    return state.message.messages[chatId][lastIndex];
-  };
+  (state: RootState): Message =>
+    messageUtils.getLastMessage(state.message.messages[chatId]);
 
 export const getChatMessagesStatus = (state: RootState): Status =>
   state.message.messagesStatuses[state.chat.selectedChat!.id];

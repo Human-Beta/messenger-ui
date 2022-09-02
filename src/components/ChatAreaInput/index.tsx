@@ -7,14 +7,14 @@ import { getChatMessages } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
 import { getUser } from '../../redux/user/selectors';
 import { createMessageRequest } from '../../services/message.service';
-
 import styles from './ChatAreaInput.module.scss';
 
 interface ChatAreaInputProps {
   selectedChat: Chat;
+  onSend?: () => void;
 }
 
-const ChatAreaInput: FC<ChatAreaInputProps> = ({ selectedChat }) => {
+const ChatAreaInput: FC<ChatAreaInputProps> = ({ selectedChat, onSend }) => {
   const dispatch = useAppDispatch();
   const [value, setValue] = useState('');
   const currentUser = useSelector(getUser);
@@ -23,13 +23,13 @@ const ChatAreaInput: FC<ChatAreaInputProps> = ({ selectedChat }) => {
 
   const handleSend = useCallback(() => {
     if (value.trim()) {
-      const messageRequest = createMessageRequest(selectedChat.id, currentUser.id, value);
+      const messageRequest = createMessageRequest(selectedChat.id, currentUser.id, value.trim());
 
-      dispatch(sendMessage(messageRequest));
+      dispatch(sendMessage(messageRequest)).then(onSend);
 
       setValue('');
     }
-  }, [dispatch, setValue, selectedChat, currentUser, value]);
+  }, [dispatch, setValue, selectedChat, currentUser, value, onSend]);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -52,6 +52,7 @@ const ChatAreaInput: FC<ChatAreaInputProps> = ({ selectedChat }) => {
         onKeyDown={(e) => {
           if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey) {
             e.preventDefault();
+
             handleSend();
           }
         }}

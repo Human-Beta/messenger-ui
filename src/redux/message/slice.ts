@@ -19,7 +19,7 @@ const messageSlice = createSlice({
     addMessage(state, action) {
       const message: Message = action.payload;
 
-      state.messages[message.chatId].push(message);
+      state.messages[message.chatId].unshift(message);
     },
   },
   extraReducers(builder) {
@@ -31,7 +31,7 @@ const messageSlice = createSlice({
 
     builder.addCase(getMessagesFromChat.fulfilled, (state, action) => {
       state.messagesStatuses[action.meta.arg.chatId] = Status.SUCCESS;
-      state.messages[action.meta.arg.chatId] = action.payload.reverse();
+      state.messages[action.meta.arg.chatId] = action.payload;
     });
 
     builder.addCase(getMessagesFromChat.rejected, (state, action) => {
@@ -44,7 +44,7 @@ const messageSlice = createSlice({
     builder.addCase(sendMessage.pending, (state, action) => {
       const newMessage = createMessage(action.meta.arg);
 
-      state.messages[action.meta.arg.chatId].push(newMessage);
+      state.messages[action.meta.arg.chatId].unshift(newMessage);
     });
 
     builder.addCase(sendMessage.fulfilled, (state, action) => {

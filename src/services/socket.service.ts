@@ -30,7 +30,7 @@ const requireDisconnection = () => {
   }
 };
 
-export const initSocket = (autoConnect: boolean | void) => {
+export const initSocket = (autoConnect?: boolean) => {
   // TODO: use log
   console.log('socket initialization');
 
