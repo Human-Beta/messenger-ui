@@ -6,7 +6,7 @@ import { MessageState } from './types';
 
 const initialState: MessageState = {
   messages: {},
-  messagesStatuses: {},
+  initMessagesStatuses: {},
 };
 
 const messageSlice = createSlice({
@@ -26,16 +26,16 @@ const messageSlice = createSlice({
     // --- getMessages ---
 
     builder.addCase(getMessagesFromChat.pending, (state, action) => {
-      state.messagesStatuses[action.meta.arg.chatId] = Status.LOADING;
+      state.initMessagesStatuses[action.meta.arg.chatId] = Status.LOADING;
     });
 
     builder.addCase(getMessagesFromChat.fulfilled, (state, action) => {
-      state.messagesStatuses[action.meta.arg.chatId] = Status.SUCCESS;
+      state.initMessagesStatuses[action.meta.arg.chatId] = Status.SUCCESS;
       state.messages[action.meta.arg.chatId] = action.payload;
     });
 
     builder.addCase(getMessagesFromChat.rejected, (state, action) => {
-      state.messagesStatuses[action.meta.arg.chatId] = Status.ERROR;
+      state.initMessagesStatuses[action.meta.arg.chatId] = Status.ERROR;
       // TODO: what should be here when an error?
     });
 

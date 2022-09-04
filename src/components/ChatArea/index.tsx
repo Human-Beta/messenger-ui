@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Status } from '../../@types/status';
 import arrowSvg from '../../assets/img/arrow.svg';
 import { getMessagesFromChat } from '../../redux/message/asyncActions';
-import { getChatMessages, getChatMessagesStatus } from '../../redux/message/selectors';
+import { getChatMessages, getInitMessagesStatusForChat } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
 import ChatAreaInput from '../ChatAreaInput';
 import MessageItem from '../MessageItem';
@@ -22,7 +22,7 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
   const messagesRef = useRef<HTMLDivElement>(null);
 
   const messages = useSelector(getChatMessages);
-  const messagesStatus = useSelector(getChatMessagesStatus);
+  const initMessagesStatus = useSelector(getInitMessagesStatusForChat);
 
   const scrollToEnd = useCallback(() => {
     messagesRef.current?.scrollTo({ top: 0 });
@@ -32,8 +32,11 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
     // TODO: pagination, or not here?
     // Because it is the initial messages loading.
     // For the initial loading we may load just a first page.
-    dispatch(getMessagesFromChat({ chatId: selectedChat.id, page: 1, size: PAGE_SIZE }));
-  }, [dispatch, selectedChat]);
+
+    if (!initMessagesStatus || initMessagesStatus === Status.ERROR) {
+      dispatch(getMessagesFromChat({ chatId: selectedChat.id, page: 1, size: PAGE_SIZE }));
+    }
+  }, [dispatch, selectedChat, initMessagesStatus]);
 
   const onScroll = useCallback(() => {
     const messagesElement = messagesRef.current;
@@ -56,7 +59,7 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
       </div>
       <div className={styles['messages-wrapper']}>
         <div className={`${styles['messages']} scrollable`} ref={messagesRef} onScroll={onScroll}>
-          {messagesStatus === Status.LOADING ? (
+          {initMessagesStatus === Status.LOADING ? (
             <MessageItemsSkeleton />
           ) : (
             messages.map((msg) => <MessageItem key={msg.date} {...msg} />)

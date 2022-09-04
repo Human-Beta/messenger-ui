@@ -2,7 +2,7 @@ import { Status } from '../../@types/status';
 
 export interface MessageState {
   messages: { [key: number]: Message[] };
-  messagesStatuses: { [key: number]: Status };
+  initMessagesStatuses: { [key: number]: Status };
 }
 
 export interface GetMessagesParams extends Pagination {
