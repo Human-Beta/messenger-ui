@@ -13,13 +13,16 @@
 - [x] Use axios interceptor to add Authorization header for each request
 - [x] Login validation
 - [x] Register validation
-- [ ] Load all messages and chats when socket connection with server is dropped and then established again
-- [ ] Add 'loaded' flag for the chats to prevent loading on each chat changing
+- [x] Prevent messages loading on each chat changing
 - [x] Add arrow in the chat for scrolling down
-- [ ] Implement searching for users/chats in the Search component
 - [ ] Implement loaders (pagination)
   - [ ] chats loading
   - [ ] messages loading
+- [ ] Implement searching for existing users/chats in the Search component
+- [ ] Imlement searching for new users in the Search component
+- [ ] Load all messages and chats when socket connection with server is dropped and then established again
+- [ ] Share socket connection between tabs?
+- [ ] Settings page?
 - [ ] Avatars
   - [ ] Chat item
   - [ ] Chat header

@@ -41,7 +41,7 @@ export const initSocket = (autoConnect?: boolean) => {
 
   const token = getAccessToken();
   if (!token) {
-    alert('There is no token in local storage!!!');
+    alert('There is no access token in local storage!!!');
     return;
   }
 
