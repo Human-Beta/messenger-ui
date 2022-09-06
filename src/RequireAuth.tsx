@@ -17,14 +17,14 @@ const RequireAuth: FC<Props> = ({ children }) => {
     if (accessToken) {
       dispatch(getCurrentUser())
         .unwrap()
-        .catch((err) => {
-          // TODO: use logger instead
-          console.log('Cannot get the current user: ', err);
-        })
         .then(() => {
           initSocketAndOpen();
 
           setUserRetreived(true);
+        })
+        .catch((err) => {
+          // TODO: use logger instead
+          console.log('Cannot get the current user: ', err);
         });
     } else {
       dispatch(LOGOUT_USER_ACTION);

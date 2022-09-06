@@ -91,7 +91,7 @@ const Register = () => {
             setErrorMsg(resp.message);
           }
 
-          // TODO: validation from server?
+          // TODO: validation from server? 400 Bad Request
 
           console.log('err', resp);
         });
