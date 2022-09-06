@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Status } from '../../@types/status';
 import { createMessage } from '../../services/message.service';
-import { getMessagesFromChat, sendMessage } from './asyncActions';
+import { getInitMessagesFromChat, getNextMessagesFromChat, sendMessage } from './asyncActions';
 import { MessageState } from './types';
 
 const initialState: MessageState = {
   messages: {},
   initMessagesStatuses: {},
+  messagesStatuses: {},
 };
 
 const messageSlice = createSlice({
@@ -23,20 +24,33 @@ const messageSlice = createSlice({
     },
   },
   extraReducers(builder) {
-    // --- getMessages ---
+    // --- getInitMessages ---
 
-    builder.addCase(getMessagesFromChat.pending, (state, action) => {
+    builder.addCase(getInitMessagesFromChat.pending, (state, action) => {
       state.initMessagesStatuses[action.meta.arg.chatId] = Status.LOADING;
     });
 
-    builder.addCase(getMessagesFromChat.fulfilled, (state, action) => {
-      state.initMessagesStatuses[action.meta.arg.chatId] = Status.SUCCESS;
+    builder.addCase(getInitMessagesFromChat.fulfilled, (state, action) => {
       state.messages[action.meta.arg.chatId] = action.payload;
+
+      state.initMessagesStatuses[action.meta.arg.chatId] = Status.SUCCESS;
     });
 
-    builder.addCase(getMessagesFromChat.rejected, (state, action) => {
+    builder.addCase(getInitMessagesFromChat.rejected, (state, action) => {
       state.initMessagesStatuses[action.meta.arg.chatId] = Status.ERROR;
       // TODO: what should be here when an error?
+    });
+
+    // --- getNextMessages ---
+
+    builder.addCase(getNextMessagesFromChat.pending, (state, action) => {
+      state.messagesStatuses[action.meta.arg.chatId] = Status.LOADING;
+    });
+
+    builder.addCase(getNextMessagesFromChat.fulfilled, (state, action) => {
+      state.messages[action.meta.arg.chatId].push(...action.payload);
+
+      state.messagesStatuses[action.meta.arg.chatId] = Status.SUCCESS;
     });
 
     // --- sendMessage ---

@@ -4,14 +4,14 @@ import axios from '../AxiosInterceptor';
 const messageApi = {
   getMessagesFromChat(
     chatId: number,
-    page: number,
+    sinceDate: string,
     size: number,
   ): Promise<AxiosResponse<Message[]>> {
     return axios.get<Message[]>('/messages', {
       params: {
         chatId,
-        page: page || 1,
-        size: size || 25,
+        sinceDate,
+        size,
       },
     });
   },

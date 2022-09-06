@@ -1,8 +1,9 @@
 import { FC, useCallback, useEffect, useRef } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
 import { Status } from '../../@types/status';
 import arrowSvg from '../../assets/img/arrow.svg';
-import { getMessagesFromChat } from '../../redux/message/asyncActions';
+import { getInitMessagesFromChat, getNextMessagesFromChat } from '../../redux/message/asyncActions';
 import { getChatMessages, getInitMessagesStatusForChat } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
 import ChatAreaInput from '../ChatAreaInput';
@@ -14,12 +15,11 @@ interface ChatAreaProps {
   selectedChat: Chat;
 }
 
-const PAGE_SIZE = 100;
-
 const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
   const dispatch = useAppDispatch();
 
   const messagesRef = useRef<HTMLDivElement>(null);
+  const [loadTriggerRef, isLoadTriggerInView] = useInView();
 
   const messages = useSelector(getChatMessages);
   const initMessagesStatus = useSelector(getInitMessagesStatusForChat);
@@ -29,14 +29,16 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
   }, [messagesRef]);
 
   useEffect(() => {
-    // TODO: pagination, or not here?
-    // Because it is the initial messages loading.
-    // For the initial loading we may load just a first page.
-
     if (!initMessagesStatus || initMessagesStatus === Status.ERROR) {
-      dispatch(getMessagesFromChat({ chatId: selectedChat.id, page: 1, size: PAGE_SIZE }));
+      dispatch(getInitMessagesFromChat({ chatId: selectedChat.id }));
     }
   }, [dispatch, selectedChat, initMessagesStatus]);
+
+  useEffect(() => {
+    if (initMessagesStatus === Status.SUCCESS && isLoadTriggerInView) {
+      dispatch(getNextMessagesFromChat({ chatId: selectedChat.id }));
+    }
+  }, [dispatch, initMessagesStatus, isLoadTriggerInView, selectedChat]);
 
   const onScroll = useCallback(() => {
     const messagesElement = messagesRef.current;
@@ -64,6 +66,7 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
           ) : (
             messages.map((msg) => <MessageItem key={msg.date} {...msg} />)
           )}
+          <div ref={loadTriggerRef} className={styles['load-trigger']} />
         </div>
         <ChatAreaInput selectedChat={selectedChat} onSend={() => scrollToEnd()} />
         <div className={styles['scroll-wrapper']} onClick={scrollToEnd}>

@@ -3,6 +3,13 @@ import { getAccessToken } from './localStorage.service';
 
 let socket: any = null;
 
+// TODO: remove alerts? or add check if it is debug mode?
+// Example:
+// if (debug) {
+//    alert("message");
+// }
+// TODO: or just add logger?
+
 export const getSocket = () => {
   requireInit();
 
