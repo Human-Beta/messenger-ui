@@ -8,4 +8,5 @@ export interface MessageState {
 
 export interface GetMessagesParams {
   chatId: number;
+  size: number;
 }

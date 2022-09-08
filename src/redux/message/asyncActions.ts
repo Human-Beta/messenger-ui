@@ -1,20 +1,19 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import moment from 'moment';
+import { Status } from '../../@types/status';
 import messageApi from '../../api/message';
 import messageUtils from '../../utils/message.utils';
 import { RootState } from '../store';
 import { GetMessagesParams } from './types';
 
-const PAGE_SIZE = 30;
-
 export const getInitMessagesFromChat = createAsyncThunk<Message[], GetMessagesParams>(
   'message/getInitMessagesFromChat',
-  async ({ chatId }) => {
+  async ({ chatId, size }) => {
     const { data } = await messageApi.getMessagesFromChat(
       chatId,
       // TODO: move ALL usages of the moment to the date.utils
       moment().toISOString(),
-      PAGE_SIZE,
+      size,
     );
 
     return data;
@@ -23,13 +22,22 @@ export const getInitMessagesFromChat = createAsyncThunk<Message[], GetMessagesPa
 
 export const getNextMessagesFromChat = createAsyncThunk<Message[], GetMessagesParams>(
   'message/getMessagesFromNextPage',
-  async ({ chatId }, thunkAPI) => {
+  async ({ chatId, size }, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     const sinceDate = messageUtils.getFirstMessage(state.message.messages[chatId]).date;
 
-    const { data } = await messageApi.getMessagesFromChat(chatId, sinceDate, PAGE_SIZE);
+    const { data } = await messageApi.getMessagesFromChat(chatId, sinceDate, size);
 
     return data;
+  },
+  {
+    condition: ({ chatId }, { getState }) => {
+      const state = getState() as RootState;
+
+      if (state.message.messagesStatuses[chatId] === Status.FULL_LOADED) {
+        return false;
+      }
+    },
   },
 );
 

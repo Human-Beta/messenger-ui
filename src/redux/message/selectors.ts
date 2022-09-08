@@ -13,5 +13,8 @@ export const getLastMessage =
   (state: RootState): Message =>
     messageUtils.getLastMessage(state.message.messages[chatId]);
 
-export const getInitMessagesStatusForChat = (state: RootState): Status =>
+export const getInitMessagesStatusForSelectedChat = (state: RootState): Status =>
   state.message.initMessagesStatuses[state.chat.selectedChat!.id];
+
+export const getMessagesStatusForSelectedChat = (state: RootState): Status =>
+  state.message.messagesStatuses[state.chat.selectedChat!.id];

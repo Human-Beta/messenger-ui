@@ -33,7 +33,11 @@ const messageSlice = createSlice({
     builder.addCase(getInitMessagesFromChat.fulfilled, (state, action) => {
       state.messages[action.meta.arg.chatId] = action.payload;
 
-      state.initMessagesStatuses[action.meta.arg.chatId] = Status.SUCCESS;
+      if (action.payload.length < action.meta.arg.size) {
+        state.initMessagesStatuses[action.meta.arg.chatId] = Status.FULL_LOADED;
+      } else {
+        state.initMessagesStatuses[action.meta.arg.chatId] = Status.SUCCESS;
+      }
     });
 
     builder.addCase(getInitMessagesFromChat.rejected, (state, action) => {
@@ -50,7 +54,11 @@ const messageSlice = createSlice({
     builder.addCase(getNextMessagesFromChat.fulfilled, (state, action) => {
       state.messages[action.meta.arg.chatId].push(...action.payload);
 
-      state.messagesStatuses[action.meta.arg.chatId] = Status.SUCCESS;
+      if (action.payload.length < action.meta.arg.size) {
+        state.messagesStatuses[action.meta.arg.chatId] = Status.FULL_LOADED;
+      } else {
+        state.messagesStatuses[action.meta.arg.chatId] = Status.SUCCESS;
+      }
     });
 
     // --- sendMessage ---

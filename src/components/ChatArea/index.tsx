@@ -4,12 +4,17 @@ import { useSelector } from 'react-redux';
 import { Status } from '../../@types/status';
 import arrowSvg from '../../assets/img/arrow.svg';
 import { getInitMessagesFromChat, getNextMessagesFromChat } from '../../redux/message/asyncActions';
-import { getChatMessages, getInitMessagesStatusForChat } from '../../redux/message/selectors';
+import {
+  getChatMessages,
+  getInitMessagesStatusForSelectedChat,
+} from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
 import ChatAreaInput from '../ChatAreaInput';
 import MessageItem from '../MessageItem';
 import styles from './ChatArea.module.scss';
 import MessageItemsSkeleton from './MessageItemsSkeleton';
+
+const PAGE_SIZE = 50;
 
 interface ChatAreaProps {
   selectedChat: Chat;
@@ -22,7 +27,7 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
   const [loadTriggerRef, isLoadTriggerInView] = useInView();
 
   const messages = useSelector(getChatMessages);
-  const initMessagesStatus = useSelector(getInitMessagesStatusForChat);
+  const initMessagesStatus = useSelector(getInitMessagesStatusForSelectedChat);
 
   const scrollToEnd = useCallback(() => {
     messagesRef.current?.scrollTo({ top: 0 });
@@ -30,13 +35,13 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
 
   useEffect(() => {
     if (!initMessagesStatus || initMessagesStatus === Status.ERROR) {
-      dispatch(getInitMessagesFromChat({ chatId: selectedChat.id }));
+      dispatch(getInitMessagesFromChat({ chatId: selectedChat.id, size: PAGE_SIZE }));
     }
   }, [dispatch, selectedChat, initMessagesStatus]);
 
   useEffect(() => {
     if (initMessagesStatus === Status.SUCCESS && isLoadTriggerInView) {
-      dispatch(getNextMessagesFromChat({ chatId: selectedChat.id }));
+      dispatch(getNextMessagesFromChat({ chatId: selectedChat.id, size: PAGE_SIZE }));
     }
   }, [dispatch, initMessagesStatus, isLoadTriggerInView, selectedChat]);
 
