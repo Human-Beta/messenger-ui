@@ -7,10 +7,12 @@ import { getInitMessagesFromChat, getNextMessagesFromChat } from '../../redux/me
 import {
   getChatMessages,
   getInitMessagesStatusForSelectedChat,
+  getMessagesStatusForSelectedChat,
 } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
 import ChatAreaInput from '../ChatAreaInput';
 import MessageItem from '../MessageItem';
+import Spinner from '../Spinner';
 import styles from './ChatArea.module.scss';
 import MessageItemsSkeleton from './MessageItemsSkeleton';
 
@@ -28,6 +30,7 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
 
   const messages = useSelector(getChatMessages);
   const initMessagesStatus = useSelector(getInitMessagesStatusForSelectedChat);
+  const messagesStatus = useSelector(getMessagesStatusForSelectedChat);
 
   const scrollToEnd = useCallback(() => {
     messagesRef.current?.scrollTo({ top: 0 });
@@ -72,6 +75,7 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
             messages.map((msg) => <MessageItem key={msg.date} {...msg} />)
           )}
           <div ref={loadTriggerRef} className={styles['load-trigger']} />
+          {messagesStatus === Status.LOADING && <Spinner />}
         </div>
         <ChatAreaInput selectedChat={selectedChat} onSend={() => scrollToEnd()} />
         <div className={styles['scroll-wrapper']} onClick={scrollToEnd}>
