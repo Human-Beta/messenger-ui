@@ -24,7 +24,7 @@ const messageSlice = createSlice({
     },
   },
   extraReducers(builder) {
-    // --- getInitMessages ---
+    // --- getInitMessagesFromChat ---
 
     builder.addCase(getInitMessagesFromChat.pending, (state, action) => {
       state.initMessagesStatuses[action.meta.arg.chatId] = Status.LOADING;
@@ -45,7 +45,7 @@ const messageSlice = createSlice({
       // TODO: what should be here when an error?
     });
 
-    // --- getNextMessages ---
+    // --- getNextMessagesFromChat ---
 
     builder.addCase(getNextMessagesFromChat.pending, (state, action) => {
       state.messagesStatuses[action.meta.arg.chatId] = Status.LOADING;
@@ -64,7 +64,7 @@ const messageSlice = createSlice({
     // --- sendMessage ---
 
     builder.addCase(sendMessage.pending, (state, action) => {
-      const newMessage = createMessage(action.meta.arg);
+      const newMessage = createMessage(action.meta.arg, action.meta.requestId);
 
       state.messages[action.meta.arg.chatId].unshift(newMessage);
     });
@@ -73,9 +73,7 @@ const messageSlice = createSlice({
       const receivedMessage = action.payload;
 
       const message = state.messages[action.meta.arg.chatId].find(
-        // TODO: maybe do not use localId == new Date(), but just action.meta.requestId instead
-        // and do not send localId to the server
-        (msg) => msg.localId === action.meta.arg.localId,
+        (msg) => msg.localId === action.meta.requestId,
       );
 
       if (message) {
@@ -90,7 +88,7 @@ const messageSlice = createSlice({
 
     builder.addCase(sendMessage.rejected, (state, action) => {
       const message = state.messages[action.meta.arg.chatId].find(
-        (msg) => msg.localId === action.meta.arg.localId,
+        (msg) => msg.localId === action.meta.requestId,
       );
 
       if (message) {

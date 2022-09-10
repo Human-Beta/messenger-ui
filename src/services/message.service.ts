@@ -7,14 +7,16 @@ export const createMessageRequest = (
   value: string,
 ): MessageRequest => {
   return {
-    localId: new Date().getTime(),
     chatId,
     senderId,
     value,
   };
 };
 
-export const createMessage = ({ localId, senderId, chatId, value }: MessageRequest): Message => {
+export const createMessage = (
+  { senderId, chatId, value }: MessageRequest,
+  localId: string,
+): Message => {
   return {
     localId,
     senderId,

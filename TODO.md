@@ -17,12 +17,12 @@
 - [x] Add arrow in the chat for scrolling down
 - [ ] Implement loaders (pagination)
   - [ ] chats loading
-  - [ ] messages loading
+  - [x] messages loading
 - [ ] Implement searching for existing users/chats in the Search component
 - [ ] Imlement searching for new users in the Search component
 - [ ] Load all messages and chats when socket connection with server is dropped and then established again
 - [ ] Share socket connection between tabs?
-- [ ] Settings page?
+- [ ] Add Settings page?
 - [ ] Avatars
   - [ ] Chat item
   - [ ] Chat header
