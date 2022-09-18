@@ -2,10 +2,14 @@
   padding: 0px 5px;
   padding-top: 5px;
   padding-right: 8px;
-  height: 100%;
 
   .empty {
     text-align: center;
     font-size: large;
   }
+}
+
+.load-trigger {
+  position: relative;
+  bottom: 50px;
 }

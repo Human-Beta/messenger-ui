@@ -38,9 +38,6 @@ const requireDisconnection = () => {
 };
 
 export const initSocket = (autoConnect?: boolean) => {
-  // TODO: use log
-  console.log('socket initialization');
-
   if (socket) {
     alert('Socket has been initialized already!!!');
     return;

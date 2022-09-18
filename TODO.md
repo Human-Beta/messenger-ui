@@ -15,9 +15,10 @@
 - [x] Register validation
 - [x] Prevent messages loading on each chat changing
 - [x] Add arrow in the chat for scrolling down
-- [ ] Implement loaders (pagination)
-  - [ ] chats loading
+- [x] Implement loaders (pagination)
+  - [x] chats loading
   - [x] messages loading
+- [ ] Implement unread messages functionality
 - [ ] Implement searching for existing users/chats in the Search component
 - [ ] Imlement searching for new users in the Search component
 - [ ] Load all messages and chats when socket connection with server is dropped and then established again

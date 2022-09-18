@@ -6,7 +6,7 @@ import { Status } from '../@types/status';
 import Background from '../components/Background';
 import ChatArea from '../components/ChatArea';
 import Sidebar from '../components/Sidebar';
-import { getChats, getChatsStatus, getSelectedChat } from '../redux/chat/selectors';
+import { getChats, getChatsInitStatus, getSelectedChat } from '../redux/chat/selectors';
 import { setSelectedChat } from '../redux/chat/slice';
 import { addMessage } from '../redux/message/slice';
 import { useAppDispatch } from '../redux/store';
@@ -20,7 +20,7 @@ const Chats: FC = () => {
 
   const chats = useSelector(getChats);
   const selectedChat = useSelector(getSelectedChat);
-  const chatsStatus = useSelector(getChatsStatus);
+  const chatsStatus = useSelector(getChatsInitStatus);
 
   const { chatName } = useParams();
   const navigate = useNavigate();

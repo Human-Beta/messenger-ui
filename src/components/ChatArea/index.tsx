@@ -16,7 +16,7 @@ import Spinner from '../Spinner';
 import styles from './ChatArea.module.scss';
 import MessageItemsSkeleton from './MessageItemsSkeleton';
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 10;
 
 interface ChatAreaProps {
   selectedChat: Chat;
@@ -26,11 +26,23 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
   const dispatch = useAppDispatch();
 
   const messagesRef = useRef<HTMLDivElement>(null);
-  const [loadTriggerRef, isLoadTriggerInView] = useInView();
 
   const messages = useSelector(getChatMessages);
   const initMessagesStatus = useSelector(getInitMessagesStatusForSelectedChat);
   const messagesStatus = useSelector(getMessagesStatusForSelectedChat);
+
+  const loadNextMessages = useCallback(
+    (inView: boolean) => {
+      if (inView) {
+        dispatch(getNextMessagesFromChat({ chatId: selectedChat.id, size: PAGE_SIZE }));
+      }
+    },
+    [dispatch, selectedChat],
+  );
+
+  const [loadTriggerRef] = useInView({
+    onChange: loadNextMessages,
+  });
 
   const scrollToEnd = useCallback(() => {
     messagesRef.current?.scrollTo({ top: 0 });
@@ -41,12 +53,6 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
       dispatch(getInitMessagesFromChat({ chatId: selectedChat.id, size: PAGE_SIZE }));
     }
   }, [dispatch, selectedChat, initMessagesStatus]);
-
-  useEffect(() => {
-    if (initMessagesStatus === Status.SUCCESS && isLoadTriggerInView) {
-      dispatch(getNextMessagesFromChat({ chatId: selectedChat.id, size: PAGE_SIZE }));
-    }
-  }, [dispatch, initMessagesStatus, isLoadTriggerInView, selectedChat]);
 
   const onScroll = useCallback(() => {
     const messagesElement = messagesRef.current;
@@ -74,7 +80,9 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
           ) : (
             messages.map((msg) => <MessageItem key={msg.date} {...msg} />)
           )}
-          <div ref={loadTriggerRef} className={styles['load-trigger']} />
+          {initMessagesStatus === Status.SUCCESS && messagesStatus !== Status.FULL_LOADED && (
+            <div ref={loadTriggerRef} className={styles['load-trigger']} />
+          )}
           {messagesStatus === Status.LOADING && <Spinner />}
         </div>
         <ChatAreaInput selectedChat={selectedChat} onSend={() => scrollToEnd()} />
