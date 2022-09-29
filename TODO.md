@@ -19,7 +19,12 @@
   - [x] chats loading
   - [x] messages loading
 - [ ] Implement unread messages functionality
-- [ ] Implement searching for existing users/chats in the Search component
+- [ ] Implement searching
+  - [x] for chats
+  - [ ] for messages
+- [ ] Store in the local storage
+  - [ ] chats
+  - [ ] messages
 - [ ] Imlement searching for new users in the Search component
 - [ ] Load all messages and chats when socket connection with server is dropped and then established again
 - [ ] Share socket connection between tabs?
@@ -27,6 +32,7 @@
 - [ ] Avatars
   - [ ] Chat item
   - [ ] Chat header
+- [ ] Implement adding an avatar to the account
 - [ ] Move some dependencies to the devDependencies (@types/...)
 - [ ] Lazy loading for components
 - [ ] Add sidebar resizing

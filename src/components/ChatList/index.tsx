@@ -25,8 +25,10 @@ const ChatList: FC = () => {
   const messages = useSelector(getMessages);
 
   useEffect(() => {
-    dispatch(getInitChats({ size: PAGE_SIZE }));
-  }, [dispatch]);
+    if (initChatsStatus === Status.LOADING) {
+      dispatch(getInitChats({ size: PAGE_SIZE }));
+    }
+  }, [dispatch, initChatsStatus]);
 
   const loadNextChats = useCallback(
     (inView: boolean) => {

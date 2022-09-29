@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Status } from '../../@types/status';
+import { getNonExistingElements } from '../../utils/array.utils';
 import { getInitChats, getNextChats } from './asyncActions';
 import { ChatState } from './types';
 
@@ -16,6 +17,9 @@ const chatSlice = createSlice({
   reducers: {
     setSelectedChat(state, action: PayloadAction<Chat | null>) {
       state.selectedChat = action.payload;
+    },
+    addChats(state, action: PayloadAction<Chat[]>) {
+      state.chats.push(...action.payload);
     },
   },
   extraReducers(builder) {
@@ -47,11 +51,13 @@ const chatSlice = createSlice({
 
     builder.addCase(getNextChats.fulfilled, (state, action) => {
       // to prevent the case when the requested chat has been loaded earlier
-      action.payload.forEach((chat) => {
-        if (!state.chats.find((c) => c.id === chat.id)) {
-          state.chats.push(chat);
-        }
-      });
+      const newChats = getNonExistingElements(
+        state.chats,
+        action.payload,
+        (c1, c2) => c1.id === c2.id,
+      );
+
+      state.chats.push(...newChats);
 
       if (action.payload.length < action.meta.arg.size) {
         state.status = Status.FULL_LOADED;
@@ -66,6 +72,6 @@ const chatSlice = createSlice({
   },
 });
 
-export const { setSelectedChat } = chatSlice.actions;
+export const { setSelectedChat, addChats } = chatSlice.actions;
 
 export default chatSlice.reducer;

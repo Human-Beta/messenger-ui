@@ -1,22 +1,32 @@
 import { FC, useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import AuthRedirect from './AuthRedirect';
 import Chats from './pages/Chats';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Register from './pages/Register';
+import { isSearhing } from './redux/search/selectors';
 import RequireAuth from './RequireAuth';
 
 const App: FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const searching = useSelector(isSearhing);
 
   useEffect(() => {
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
+    const navigateToHome = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && location.pathname !== '/' && !searching) {
         navigate('/');
       }
-    });
-  }, [navigate]);
+    };
+
+    document.addEventListener('keydown', navigateToHome);
+
+    return () => {
+      document.removeEventListener('keydown', navigateToHome);
+    };
+  }, [navigate, location, searching]);
 
   return (
     <div className="app">

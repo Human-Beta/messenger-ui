@@ -4,11 +4,13 @@ import { removeAccessToken } from '../services/localStorage.service';
 import { removeSocketIfPresent } from '../services/socket.service';
 import authReducer from './auth/slice';
 import chatReducer from './chat/slice';
-import { ChatState } from './chat/types';
 import messageReducer from './message/slice';
-import { MessageState } from './message/types';
 import userReducer from './user/slice';
+import searchReducer from './search/slice';
+import { ChatState } from './chat/types';
+import { MessageState } from './message/types';
 import { UserState } from './user/types';
+import { SearchState } from './search/types';
 
 const USER_LOGOUT_ACTION_TYPE = 'USER_LOGOUT';
 
@@ -21,6 +23,7 @@ const appReducer = combineReducers({
   message: messageReducer,
   user: userReducer,
   auth: authReducer,
+  search: searchReducer,
 });
 
 const rootReducer: Reducer<
@@ -29,6 +32,7 @@ const rootReducer: Reducer<
     message: MessageState;
     user: UserState;
     auth: {};
+    search: SearchState;
   },
   AnyAction
 > = (state: RootState | undefined, action: AnyAction) => {

@@ -10,6 +10,19 @@ const chatApi = {
       },
     });
   },
+  async getChatsWithNameStartsWith(
+    name: string,
+    page: number,
+    size: number,
+  ): Promise<AxiosResponse<Chat[]>> {
+    return axios.get<Chat[]>('/chats/search', {
+      params: {
+        name,
+        page,
+        size,
+      },
+    });
+  },
 };
 
 export default chatApi;
