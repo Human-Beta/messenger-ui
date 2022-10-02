@@ -8,22 +8,23 @@ import logoutImg from '../../assets/img/logout.svg';
 import searchSvg from '../../assets/img/search.svg';
 import { getSearchBy, getSearchValue, isSearhing } from '../../redux/search/selectors';
 import {
-  clearSearch,
+  resetSearch,
   setSearchBy,
-  startSearching,
   setSearchValue,
+  startSearching,
   stopSearching,
 } from '../../redux/search/slice';
 import { SearchBy } from '../../redux/search/types';
 import { LOGOUT_USER_ACTION, useAppDispatch } from '../../redux/store';
 
-import { findNextChats } from '../../redux/search/asyncActions';
+import { findInitChats } from '../../redux/search/asyncActions';
 import { extractChatName } from '../../utils/search.utils';
 import styles from './Search.module.scss';
 
 const { root, input_wrapper, logout } = styles;
 
 export const PAGE_SIZE = 50;
+export const SEARCH_VALUE_MIN_SIZE = 3;
 
 const Search: FC = () => {
   const dispatch = useAppDispatch();
@@ -57,17 +58,6 @@ const Search: FC = () => {
     [dispatch, searchBy],
   );
 
-  const searchForChats = useCallback(
-    (value: string) => {
-      const name = extractChatName(value);
-
-      if (name) {
-        dispatch(findNextChats({ name, size: PAGE_SIZE }));
-      }
-    },
-    [dispatch],
-  );
-
   const search = useCallback(
     (value: string) => {
       value = value.trim();
@@ -77,10 +67,14 @@ const Search: FC = () => {
       }
 
       if (searchBy === SearchBy.CHATS) {
-        searchForChats(value);
+        const name = extractChatName(value);
+
+        if (name) {
+          dispatch(findInitChats({ name, size: PAGE_SIZE }));
+        }
       }
     },
-    [searchForChats, searchBy],
+    [dispatch, searchBy],
   );
 
   useEffect(() => {
@@ -114,13 +108,13 @@ const Search: FC = () => {
         <img src={searchSvg} width="22" alt="search icon" />
         <DebounceInput
           inputRef={inputRef}
-          minLength={3}
+          minLength={SEARCH_VALUE_MIN_SIZE}
           debounceTimeout={400}
           placeholder="Search"
           onInput={(e: any) => {
             const currValue = e.target.value.trim();
             dispatch(setSearchValue(currValue));
-            dispatch(clearSearch());
+            dispatch(resetSearch());
             resolveSearchBy(currValue);
           }}
           onChange={(e) => search(e.target.value)}

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Status } from '../../@types/status';
-import { findNextChats } from './asyncActions';
+import { findInitChats, findNextChats } from './asyncActions';
 import { SearchBy, SearchState } from './types';
 
 const initialState: SearchState = {
@@ -9,8 +9,9 @@ const initialState: SearchState = {
   by: SearchBy.CHATS_AND_MESSAGES,
   chats: {
     value: [],
+    initStatus: Status.LOADING,
     status: Status.LOADING,
-    page: 0,
+    page: 1,
   },
 };
 
@@ -25,11 +26,10 @@ const searchSlice = createSlice({
       state.searching = false;
       state.searchValue = '';
       state.by = SearchBy.CHATS_AND_MESSAGES;
-      state.chats = {
-        value: [],
-        status: Status.LOADING,
-        page: 0,
-      };
+      state.chats.value = [];
+      state.chats.initStatus = Status.LOADING;
+      state.chats.status = Status.LOADING;
+      state.chats.page = 1;
     },
     // TODO: use PayloadAction in each slice
     setSearchValue(state, action: PayloadAction<string>) {
@@ -38,16 +38,33 @@ const searchSlice = createSlice({
     setSearchBy(state, action: PayloadAction<SearchBy>) {
       state.by = action.payload;
     },
-    clearSearch(state) {
-      state.chats = {
-        value: [],
-        status: Status.LOADING,
-        page: 0,
-      };
+    resetSearch(state) {
+      state.chats.status = Status.LOADING;
     },
   },
   extraReducers(builder) {
-    // --- findChats ---
+    // --- findInitChats ---
+
+    builder.addCase(findInitChats.pending, (state) => {
+      state.chats.initStatus = Status.LOADING;
+      state.chats.page = 1;
+    });
+
+    builder.addCase(findInitChats.fulfilled, (state, action) => {
+      state.chats.value = action.payload;
+
+      if (action.payload.length < action.meta.arg.size) {
+        state.chats.initStatus = Status.FULL_LOADED;
+      } else {
+        state.chats.initStatus = Status.SUCCESS;
+      }
+    });
+
+    builder.addCase(findInitChats.rejected, (state) => {
+      state.chats.initStatus = Status.ERROR;
+    });
+
+    // --- findNextChats ---
 
     builder.addCase(findNextChats.pending, (state) => {
       state.chats.status = Status.LOADING;
@@ -70,7 +87,7 @@ const searchSlice = createSlice({
   },
 });
 
-export const { startSearching, stopSearching, setSearchValue, setSearchBy, clearSearch } =
+export const { startSearching, stopSearching, setSearchValue, setSearchBy, resetSearch } =
   searchSlice.actions;
 
 export default searchSlice.reducer;

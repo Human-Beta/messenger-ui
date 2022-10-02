@@ -1,11 +1,11 @@
 import { FC } from 'react';
-import SearchChats from '../SearchChats';
+import SearchChatsResult from '../SearchChatsResult';
 import SearchMessages from '../SearchMessages';
 
 const SearchResult: FC = () => {
   return (
     <div className="scrollable">
-      <SearchChats />
+      <SearchChatsResult />
       <SearchMessages />
     </div>
   );

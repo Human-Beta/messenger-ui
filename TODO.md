@@ -20,12 +20,12 @@
   - [x] messages loading
 - [ ] Implement unread messages functionality
 - [ ] Implement searching
-  - [x] for chats
+  - [x] for existing chats
+  - [ ] for global chats
   - [ ] for messages
 - [ ] Store in the local storage
   - [ ] chats
   - [ ] messages
-- [ ] Imlement searching for new users in the Search component
 - [ ] Load all messages and chats when socket connection with server is dropped and then established again
 - [ ] Share socket connection between tabs?
 - [ ] Add Settings page?

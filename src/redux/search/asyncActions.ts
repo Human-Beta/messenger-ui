@@ -6,24 +6,37 @@ import { getNonExistingElements } from '../../utils/array.utils';
 import { addChats } from '../chat/slice';
 import { setMessages } from '../message/slice';
 import { RootState } from '../store';
-import { FindNextChatsParams } from './types';
+import { FindChatsParams } from './types';
 
-export const findNextChats = createAsyncThunk<Chat[], FindNextChatsParams>(
+const findChats = async ({ name, size }: FindChatsParams, page: number, thunkAPI: any) => {
+  const state = thunkAPI.getState() as RootState;
+
+  const { data: chats } = await chatApi.getChatsWithNameStartsWith(name, page, size);
+
+  const newChats = getNonExistingElements(state.chat.chats, chats, (c1, c2) => c1.id === c2.id);
+  const newLastMessages = getLastMessages(newChats);
+
+  // TODO: resets already loaded values in the chats. I need to set only new chats and messages for it
+  thunkAPI.dispatch(setMessages(newLastMessages));
+  thunkAPI.dispatch(addChats(newChats));
+
+  return chats;
+};
+
+export const findInitChats = createAsyncThunk<Chat[], FindChatsParams>(
+  'message/findInitChats',
+  async (params, thunkAPI) => {
+    return findChats(params, 1, thunkAPI);
+  },
+);
+
+export const findNextChats = createAsyncThunk<Chat[], FindChatsParams>(
   'message/findNextChats',
-  async ({ name, size }, thunkAPI) => {
+  async (params, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     const page = state.search.chats.page;
 
-    const { data: chats } = await chatApi.getChatsWithNameStartsWith(name, page, size);
-
-    const newChats = getNonExistingElements(state.chat.chats, chats, (c1, c2) => c1.id === c2.id);
-    const newLastMessages = getLastMessages(newChats);
-
-    // TODO: resets already loaded values in the chats. I need to set onlye new chats and messages for it
-    thunkAPI.dispatch(setMessages(newLastMessages));
-    thunkAPI.dispatch(addChats(newChats));
-
-    return chats;
+    return findChats(params, page, thunkAPI);
   },
   {
     condition: (_, { getState }) => {

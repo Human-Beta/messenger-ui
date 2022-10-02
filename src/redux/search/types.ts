@@ -6,6 +6,7 @@ export interface SearchState {
   searchValue: string;
   chats: {
     value: Chat[];
+    initStatus: Status;
     status: Status;
     page: number;
   };
@@ -22,7 +23,7 @@ export enum SearchBy {
   CHATS_AND_MESSAGES = 'chats_and_messages',
 }
 
-export interface FindNextChatsParams {
+export interface FindChatsParams {
   name: string;
   size: number;
 }

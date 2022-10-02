@@ -31,12 +31,8 @@ const SearchChats: FC = () => {
     onChange: loadNextChats,
   });
 
-  if (!chats || !chats.length) {
-    return <></>;
-  }
-
   return (
-    <div className={`${styles.chats}`}>
+    <div className={styles.chats}>
       <div className={`${styles.search_label} unselectable`}>Chats</div>
       {chats.map((chat) => (
         <SearchChat key={chat.id} chat={chat} />
