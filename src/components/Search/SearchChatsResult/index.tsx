@@ -11,7 +11,7 @@ const SearchChatsResult: FC = () => {
   const searchValue = useSelector(getSearchValue);
   const status = useSelector(getInitChatsStatus);
 
-  if (searchValue.length < SEARCH_VALUE_MIN_SIZE || status === Status.LOADING) {
+  if (searchValue.length < SEARCH_VALUE_MIN_SIZE || status < Status.SUCCESS) {
     return <></>;
   }
 

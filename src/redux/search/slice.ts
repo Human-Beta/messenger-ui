@@ -9,8 +9,8 @@ const initialState: SearchState = {
   by: SearchBy.CHATS_AND_MESSAGES,
   chats: {
     value: [],
-    initStatus: Status.LOADING,
-    status: Status.LOADING,
+    initStatus: Status.INITIAL,
+    status: Status.INITIAL,
     page: 1,
   },
 };
@@ -27,8 +27,8 @@ const searchSlice = createSlice({
       state.searchValue = '';
       state.by = SearchBy.CHATS_AND_MESSAGES;
       state.chats.value = [];
-      state.chats.initStatus = Status.LOADING;
-      state.chats.status = Status.LOADING;
+      state.chats.initStatus = Status.INITIAL;
+      state.chats.status = Status.INITIAL;
       state.chats.page = 1;
     },
     // TODO: use PayloadAction in each slice
@@ -39,8 +39,8 @@ const searchSlice = createSlice({
       state.by = action.payload;
     },
     resetSearch(state) {
-      state.chats.initStatus = Status.LOADING;
-      state.chats.status = Status.LOADING;
+      state.chats.initStatus = Status.INITIAL;
+      state.chats.status = Status.INITIAL;
     },
   },
   extraReducers(builder) {

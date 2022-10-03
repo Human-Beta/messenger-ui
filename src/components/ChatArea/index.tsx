@@ -75,7 +75,7 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
       </div>
       <div className={styles['messages-wrapper']}>
         <div className={`${styles['messages']} scrollable`} ref={messagesRef} onScroll={onScroll}>
-          {initMessagesStatus === Status.LOADING ? (
+          {initMessagesStatus < Status.SUCCESS ? (
             <MessageItemsSkeleton />
           ) : (
             messages.map((msg) => <MessageItem key={msg.date} {...msg} />)

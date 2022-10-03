@@ -25,7 +25,7 @@ const ChatList: FC = () => {
   const messages = useSelector(getMessages);
 
   useEffect(() => {
-    if (initChatsStatus === Status.LOADING) {
+    if (initChatsStatus === Status.INITIAL) {
       dispatch(getInitChats({ size: PAGE_SIZE }));
     }
   }, [dispatch, initChatsStatus]);
@@ -47,7 +47,7 @@ const ChatList: FC = () => {
 
   return (
     <div className={`${root} scrollable`}>
-      {initChatsStatus === Status.LOADING ? (
+      {initChatsStatus < Status.SUCCESS ? (
         <ChatListSkeleton />
       ) : chats.length ? (
         chats

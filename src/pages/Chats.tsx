@@ -27,7 +27,7 @@ const Chats: FC = () => {
 
   useEffect(() => {
     // TODO: check if it is needed
-    if (chatsStatus === Status.LOADING) {
+    if (chatsStatus === Status.INITIAL) {
       return;
     } else if (!chatName) {
       dispatch(setSelectedChat(null));

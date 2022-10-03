@@ -6,7 +6,7 @@ import { ChatState } from './types';
 
 const initialState: ChatState = {
   chats: [],
-  initStatus: Status.LOADING,
+  initStatus: Status.INITIAL,
   status: null,
   selectedChat: null,
 };
