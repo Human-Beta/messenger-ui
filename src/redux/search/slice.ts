@@ -39,6 +39,7 @@ const searchSlice = createSlice({
       state.by = action.payload;
     },
     resetSearch(state) {
+      state.chats.initStatus = Status.LOADING;
       state.chats.status = Status.LOADING;
     },
   },

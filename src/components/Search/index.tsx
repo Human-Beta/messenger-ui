@@ -109,7 +109,7 @@ const Search: FC = () => {
         <DebounceInput
           inputRef={inputRef}
           minLength={SEARCH_VALUE_MIN_SIZE}
-          debounceTimeout={400}
+          debounceTimeout={300}
           placeholder="Search"
           onInput={(e: any) => {
             const currValue = e.target.value.trim();

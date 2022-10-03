@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { PAGE_SIZE } from '..';
 import { Status } from '../../../@types/status';
 import { findNextChats } from '../../../redux/search/asyncActions';
-import { getChatsStatus, getFoundChats, getSearchValue } from '../../../redux/search/selectors';
+import { getNextChatsStatus, getFoundChats, getSearchValue } from '../../../redux/search/selectors';
 import { useAppDispatch } from '../../../redux/store';
 import { extractChatName } from '../../../utils/search.utils';
 import styles from '../Search.module.scss';
@@ -15,7 +15,7 @@ const SearchChats: FC = () => {
 
   const chats = useSelector(getFoundChats);
   const value = useSelector(getSearchValue);
-  const status = useSelector(getChatsStatus);
+  const status = useSelector(getNextChatsStatus);
 
   const loadNextChats = useCallback(
     (inView: boolean) => {

@@ -10,4 +10,6 @@ export const getSearchBy = (state: RootState): SearchBy => state.search.by;
 
 export const getFoundChats = (state: RootState): Chat[] => state.search.chats.value;
 
-export const getChatsStatus = (state: RootState): Status => state.search.chats.status;
+export const getInitChatsStatus = (state: RootState): Status => state.search.chats.initStatus;
+
+export const getNextChatsStatus = (state: RootState): Status => state.search.chats.status;
