@@ -8,6 +8,6 @@ export interface ChatState {
 }
 
 export interface GetChatsParams {
-  excludeIds?: number[];
+  excludedIds?: number[];
   size: number;
 }

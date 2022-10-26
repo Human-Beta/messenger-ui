@@ -100,7 +100,12 @@ const Search: FC = () => {
   return (
     <div className={root}>
       {searching ? (
-        <img src={arrowSvg} className={styles.arrow} alt="arrow" />
+        <img
+          src={arrowSvg}
+          className={styles.arrow}
+          alt="arrow"
+          onClick={() => dispatch(stopSearching())}
+        />
       ) : (
         <img src={burgerMenu} className={styles.burger} alt="burger menu" />
       )}

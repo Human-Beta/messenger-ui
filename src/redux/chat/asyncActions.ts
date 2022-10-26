@@ -6,8 +6,8 @@ import { setMessages } from '../message/slice';
 import { RootState } from '../store';
 import { GetChatsParams } from './types';
 
-const getChats = async (excludeIds: number[], size: number, thunkAPI: any): Promise<Chat[]> => {
-  const { data: chats } = await chatApi.getChats(excludeIds, size);
+const getChats = async (excludedIds: number[], size: number, thunkAPI: any): Promise<Chat[]> => {
+  const { data: chats } = await chatApi.getChats(excludedIds, size);
 
   const lastMessages = getLastMessages(chats);
 
@@ -18,15 +18,15 @@ const getChats = async (excludeIds: number[], size: number, thunkAPI: any): Prom
 
 export const getInitChats = createAsyncThunk<Chat[], GetChatsParams>(
   'chat/getInitChats',
-  async ({ excludeIds = [], size }, thunkAPI) => {
-    return getChats(excludeIds, size, thunkAPI);
+  async ({ excludedIds = [], size }, thunkAPI) => {
+    return getChats(excludedIds, size, thunkAPI);
   },
 );
 
 export const getNextChats = createAsyncThunk<Chat[], GetChatsParams>(
   'chats/getNextChats',
-  async ({ excludeIds = [], size }, thunkAPI) => {
-    return getChats(excludeIds, size, thunkAPI);
+  async ({ excludedIds = [], size }, thunkAPI) => {
+    return getChats(excludedIds, size, thunkAPI);
   },
   {
     condition: (_, { getState }) => {

@@ -33,9 +33,9 @@ const ChatList: FC = () => {
   const loadNextChats = useCallback(
     (inView: boolean) => {
       if (inView) {
-        const excludeIds = chats.map((chat) => chat.id);
+        const excludedIds = chats.map((chat) => chat.id);
 
-        dispatch(getNextChats({ excludeIds, size: PAGE_SIZE }));
+        dispatch(getNextChats({ excludedIds, size: PAGE_SIZE }));
       }
     },
     [dispatch, chats],
