@@ -6,7 +6,7 @@ import { Status } from '../../../@types/status';
 import { findNextChats } from '../../../redux/search/asyncActions';
 import { getNextChatsStatus, getFoundChats, getSearchValue } from '../../../redux/search/selectors';
 import { useAppDispatch } from '../../../redux/store';
-import { extractChatName } from '../../../utils/search.utils';
+import { extractSearchValue } from '../../../utils/search.utils';
 import styles from '../Search.module.scss';
 import SearchChat from '../SearchChat';
 
@@ -19,7 +19,7 @@ const SearchChats: FC = () => {
 
   const loadNextChats = useCallback(
     (inView: boolean) => {
-      const name = extractChatName(value);
+      const name = extractSearchValue(value);
       if (inView && name) {
         dispatch(findNextChats({ name, size: PAGE_SIZE }));
       }
@@ -33,7 +33,7 @@ const SearchChats: FC = () => {
 
   return (
     <div className={styles.chats}>
-      <div className={`${styles.search_label} unselectable`}>Chats</div>
+      <div className={`${styles.search_label} unselectable`}>Existing chats</div>
       {chats.map((chat) => (
         <SearchChat key={chat.id} chat={chat} />
       ))}

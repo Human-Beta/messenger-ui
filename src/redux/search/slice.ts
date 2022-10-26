@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Status } from '../../@types/status';
-import { findInitChats, findNextChats } from './asyncActions';
+import {
+  findInitChats,
+  findInitUnknownUsers,
+  findNextChats,
+  findNextUnknownUsers,
+} from './asyncActions';
 import { SearchBy, SearchState } from './types';
 
 const initialState: SearchState = {
@@ -8,6 +13,12 @@ const initialState: SearchState = {
   searchValue: '',
   by: SearchBy.CHATS_AND_MESSAGES,
   chats: {
+    value: [],
+    initStatus: Status.INITIAL,
+    status: Status.INITIAL,
+    page: 1,
+  },
+  unknownUsers: {
     value: [],
     initStatus: Status.INITIAL,
     status: Status.INITIAL,
@@ -30,6 +41,9 @@ const searchSlice = createSlice({
       state.chats.initStatus = Status.INITIAL;
       state.chats.status = Status.INITIAL;
       state.chats.page = 1;
+      state.unknownUsers.value = [];
+      state.unknownUsers.status = Status.INITIAL;
+      state.unknownUsers.page = 0;
     },
     // TODO: use PayloadAction in each slice
     setSearchValue(state, action: PayloadAction<string>) {
@@ -41,6 +55,8 @@ const searchSlice = createSlice({
     resetSearch(state) {
       state.chats.initStatus = Status.INITIAL;
       state.chats.status = Status.INITIAL;
+      state.unknownUsers.initStatus = Status.INITIAL;
+      state.unknownUsers.status = Status.INITIAL;
     },
   },
   extraReducers(builder) {
@@ -54,6 +70,7 @@ const searchSlice = createSlice({
     builder.addCase(findInitChats.fulfilled, (state, action) => {
       state.chats.value = action.payload;
 
+      // TODO: move to common method
       if (action.payload.length < action.meta.arg.size) {
         state.chats.initStatus = Status.FULL_LOADED;
       } else {
@@ -84,6 +101,48 @@ const searchSlice = createSlice({
 
     builder.addCase(findNextChats.rejected, (state) => {
       state.chats.status = Status.ERROR;
+    });
+
+    // find init unknown users
+
+    builder.addCase(findInitUnknownUsers.pending, (state) => {
+      state.unknownUsers.initStatus = Status.LOADING;
+      state.unknownUsers.page = 1;
+    });
+
+    builder.addCase(findInitUnknownUsers.fulfilled, (state, action) => {
+      state.unknownUsers.value = action.payload;
+
+      if (action.payload.length < action.meta.arg.size) {
+        state.unknownUsers.initStatus = Status.FULL_LOADED;
+      } else {
+        state.unknownUsers.initStatus = Status.SUCCESS;
+      }
+    });
+
+    builder.addCase(findInitUnknownUsers.rejected, (state) => {
+      state.unknownUsers.initStatus = Status.ERROR;
+    });
+
+    // find next unknown users
+
+    builder.addCase(findNextUnknownUsers.pending, (state) => {
+      state.unknownUsers.status = Status.LOADING;
+      state.unknownUsers.page += 1;
+    });
+
+    builder.addCase(findNextUnknownUsers.fulfilled, (state, action) => {
+      state.unknownUsers.value.push(...action.payload);
+
+      if (action.payload.length < action.meta.arg.size) {
+        state.unknownUsers.status = Status.FULL_LOADED;
+      } else {
+        state.unknownUsers.status = Status.SUCCESS;
+      }
+    });
+
+    builder.addCase(findNextUnknownUsers.rejected, (state) => {
+      state.unknownUsers.status = Status.ERROR;
     });
   },
 });

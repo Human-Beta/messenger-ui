@@ -10,6 +10,12 @@ export interface SearchState {
     status: Status;
     page: number;
   };
+  unknownUsers: {
+    value: User[];
+    initStatus: Status;
+    status: Status;
+    page: number;
+  };
   // TODO: fix
   // messages: {
   //   value: ChatPreview[];
@@ -25,5 +31,10 @@ export enum SearchBy {
 
 export interface FindChatsParams {
   name: string;
+  size: number;
+}
+
+export interface FindUnknownUsersParams {
+  nickname: string;
   size: number;
 }

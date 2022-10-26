@@ -18,7 +18,7 @@ import { SearchBy } from '../../redux/search/types';
 import { LOGOUT_USER_ACTION, useAppDispatch } from '../../redux/store';
 
 import { findInitChats } from '../../redux/search/asyncActions';
-import { extractChatName } from '../../utils/search.utils';
+import { extractSearchValue } from '../../utils/search.utils';
 import styles from './Search.module.scss';
 
 const { root, input_wrapper, logout } = styles;
@@ -67,7 +67,7 @@ const Search: FC = () => {
       }
 
       if (searchBy === SearchBy.CHATS) {
-        const name = extractChatName(value);
+        const name = extractSearchValue(value);
 
         if (name) {
           dispatch(findInitChats({ name, size: PAGE_SIZE }));

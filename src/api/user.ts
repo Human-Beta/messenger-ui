@@ -8,6 +8,15 @@ const userApi = {
   registerUser(userRegistration: UserRegistration): Promise<AxiosResponse<User>> {
     return axios.post('/users', userRegistration);
   },
+  getUnknownUsers(nickname: string, page: number, size: number): Promise<AxiosResponse<User[]>> {
+    return axios.get('/users/unknown', {
+      params: {
+        nickname,
+        page,
+        size,
+      },
+    });
+  },
 };
 
 export default userApi;

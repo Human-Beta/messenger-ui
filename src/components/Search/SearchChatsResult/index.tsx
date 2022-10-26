@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { SEARCH_VALUE_MIN_SIZE } from '..';
 import { Status } from '../../../@types/status';
 import { getFoundChats, getInitChatsStatus, getSearchValue } from '../../../redux/search/selectors';
-import GlobalSearchChats from './GlobalSearchChats';
+import SearchUnknownUsers from './SearchUnknownUsers';
 import SearchChats from './SearchChats';
 
 const SearchChatsResult: FC = () => {
@@ -19,7 +19,7 @@ const SearchChatsResult: FC = () => {
     return <SearchChats />;
   }
 
-  return <GlobalSearchChats />;
+  return <SearchUnknownUsers />;
 };
 
 export default SearchChatsResult;

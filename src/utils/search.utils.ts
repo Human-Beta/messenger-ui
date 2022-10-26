@@ -1,3 +1,3 @@
-export const extractChatName = (value: string) => {
+export const extractSearchValue = (value: string) => {
   return value.replaceAll('@', '').trim();
 };
