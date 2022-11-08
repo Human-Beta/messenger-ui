@@ -1,0 +1,18 @@
+.root {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.say-hello {
+  border-radius: 20px;
+  background-color: rgba(109, 141, 65, 0.4);
+  padding: 20px;
+  color: white;
+
+  & > p:first-child {
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+}

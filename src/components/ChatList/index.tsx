@@ -6,6 +6,7 @@ import { getInitChats, getNextChats } from '../../redux/chat/asyncActions';
 import { getChats, getChatsInitStatus, getChatsStatus } from '../../redux/chat/selectors';
 import { getMessages } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
+import { isNewChat } from '../../utils/chat.utils';
 import messageUtils from '../../utils/message.utils';
 import ChatItem from '../ChatItem';
 import Spinner from '../Spinner';
@@ -54,6 +55,10 @@ const ChatList: FC = () => {
           .slice()
           .sort((c1, c2) => {
             // TODO: refactor?
+            if (isNewChat(c1) || isNewChat(c2)) {
+              return +isNewChat(c2) - +isNewChat(c1);
+            }
+
             const lastMessage1 = messageUtils.getLastMessage(messages[c1.id]);
             const lastMessage2 = messageUtils.getLastMessage(messages[c2.id]);
 

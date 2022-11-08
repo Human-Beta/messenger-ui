@@ -10,11 +10,13 @@ import {
   getMessagesStatusForSelectedChat,
 } from '../../redux/message/selectors';
 import { useAppDispatch } from '../../redux/store';
+import { isNewChat, isNotNewChat } from '../../utils/chat.utils';
 import ChatAreaInput from '../ChatAreaInput';
 import MessageItem from '../MessageItem';
 import Spinner from '../Spinner';
 import styles from './ChatArea.module.scss';
 import MessageItemsSkeleton from './MessageItemsSkeleton';
+import SayHello from './SayHello';
 
 const PAGE_SIZE = 10;
 
@@ -49,7 +51,10 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
   }, [messagesRef]);
 
   useEffect(() => {
-    if (!initMessagesStatus || initMessagesStatus === Status.ERROR) {
+    if (
+      isNotNewChat(selectedChat) &&
+      (!initMessagesStatus || initMessagesStatus === Status.ERROR)
+    ) {
       dispatch(getInitMessagesFromChat({ chatId: selectedChat.id, size: PAGE_SIZE }));
     }
   }, [dispatch, selectedChat, initMessagesStatus]);
@@ -74,18 +79,22 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
         <span className="sender">{selectedChat.name}</span>
       </div>
       <div className={styles['messages-wrapper']}>
-        <div className={`${styles['messages']} scrollable`} ref={messagesRef} onScroll={onScroll}>
-          {initMessagesStatus < Status.SUCCESS ? (
-            <MessageItemsSkeleton />
-          ) : (
-            messages.map((msg) => <MessageItem key={msg.date} {...msg} />)
-          )}
-          {initMessagesStatus === Status.SUCCESS && messagesStatus !== Status.FULL_LOADED && (
-            <div ref={loadTriggerRef} className={styles['load-trigger']} />
-          )}
-          {messagesStatus === Status.LOADING && <Spinner />}
-        </div>
-        <ChatAreaInput selectedChat={selectedChat} onSend={() => scrollToEnd()} />
+        {isNewChat(selectedChat) ? (
+          <SayHello />
+        ) : (
+          <div className={`${styles['messages']} scrollable`} ref={messagesRef} onScroll={onScroll}>
+            {initMessagesStatus < Status.SUCCESS ? (
+              <MessageItemsSkeleton />
+            ) : (
+              messages.map((msg) => <MessageItem key={msg.date} {...msg} />)
+            )}
+            {initMessagesStatus === Status.SUCCESS && messagesStatus !== Status.FULL_LOADED && (
+              <div ref={loadTriggerRef} className={styles['load-trigger']} />
+            )}
+            {messagesStatus === Status.LOADING && <Spinner />}
+          </div>
+        )}
+        <ChatAreaInput selectedChat={selectedChat} onSend={scrollToEnd} />
         <div className={styles['scroll-wrapper']} onClick={scrollToEnd}>
           <img src={arrowSvg} className="filter-grey" width={22} alt="scroll" />
         </div>

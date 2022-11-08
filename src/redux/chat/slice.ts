@@ -4,6 +4,19 @@ import { getNonExistingElements } from '../../utils/array.utils';
 import { getInitChats, getNextChats } from './asyncActions';
 import { ChatState } from './types';
 
+// TODO: create constants file? put there NEW_CHAT_ID and for example PAGE_SIZE?
+export const NEW_CHAT_ID = -1;
+export const STUB_MESSAGE_ID = -1;
+
+const stubMessage: Message = {
+  id: STUB_MESSAGE_ID,
+  senderId: -1,
+  chatId: -1,
+  value: '<no messages yet>',
+  status: Status.SUCCESS,
+  date: new Date().toISOString(),
+};
+
 const initialState: ChatState = {
   chats: [],
   initStatus: Status.INITIAL,
@@ -20,6 +33,27 @@ const chatSlice = createSlice({
     },
     addChats(state, action: PayloadAction<Chat[]>) {
       state.chats.push(...action.payload);
+    },
+    createNewChat(state, action: PayloadAction<User>) {
+      const user = action.payload;
+
+      const newChat = {
+        id: NEW_CHAT_ID,
+        name: user.name,
+        chatName: user.nickname,
+        imageUrl: user.avatarUrl,
+        initialLastMessage: stubMessage,
+      };
+
+      state.selectedChat = newChat;
+      state.chats.push(newChat);
+    },
+    deleteNewChat(state) {
+      const index = state.chats.findIndex((c) => c.id === NEW_CHAT_ID);
+      if (index >= 0) {
+        state.selectedChat = null;
+        state.chats.splice(index, 1);
+      }
     },
   },
   extraReducers(builder) {
@@ -72,6 +106,6 @@ const chatSlice = createSlice({
   },
 });
 
-export const { setSelectedChat, addChats } = chatSlice.actions;
+export const { setSelectedChat, addChats, createNewChat, deleteNewChat } = chatSlice.actions;
 
 export default chatSlice.reducer;

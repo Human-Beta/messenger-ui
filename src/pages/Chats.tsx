@@ -1,14 +1,15 @@
 import moment from 'moment';
 import { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Status } from '../@types/status';
 import Background from '../components/Background';
 import ChatArea from '../components/ChatArea';
 import Sidebar from '../components/Sidebar';
 import { getChats, getChatsInitStatus, getSelectedChat } from '../redux/chat/selectors';
-import { setSelectedChat } from '../redux/chat/slice';
+import { deleteNewChat, NEW_CHAT_ID, setSelectedChat } from '../redux/chat/slice';
 import { addMessage } from '../redux/message/slice';
+import { isSearhing } from '../redux/search/selectors';
 import { useAppDispatch } from '../redux/store';
 import { getSocket } from '../services/socket.service';
 
@@ -17,17 +18,38 @@ const findChat = (chats: Chat[], chatName: string | undefined) =>
 
 const Chats: FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const chats = useSelector(getChats);
   const selectedChat = useSelector(getSelectedChat);
   const chatsStatus = useSelector(getChatsInitStatus);
+  const searching = useSelector(isSearhing);
 
   const { chatName } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    // TODO: check if it is needed
-    if (chatsStatus === Status.INITIAL) {
+    const navigateToHome = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && location.pathname !== '/' && !searching) {
+        navigate('/');
+      }
+    };
+
+    document.addEventListener('keydown', navigateToHome);
+
+    return () => {
+      document.removeEventListener('keydown', navigateToHome);
+    };
+  }, [navigate, location, searching]);
+
+  useEffect(() => {
+    if (selectedChat?.id !== NEW_CHAT_ID) {
+      dispatch(deleteNewChat());
+    }
+  }, [dispatch, selectedChat]);
+
+  useEffect(() => {
+    if (chatsStatus <= Status.LOADING) {
       return;
     } else if (!chatName) {
       dispatch(setSelectedChat(null));
