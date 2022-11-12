@@ -5,6 +5,7 @@ import avatarSvg from '../../assets/img/avatar.svg';
 import { getSelectedChat } from '../../redux/chat/selectors';
 import { getLastMessage } from '../../redux/message/selectors';
 import { getDateString } from '../../utils';
+import { isNewChat } from '../../utils/chat.utils';
 import styles from './ChatItem.module.scss';
 
 const { sender, message, time, active } = styles;
@@ -20,7 +21,9 @@ const ChatItem: FC<ChatItemProps> = ({ chat }) => {
   return (
     <Link
       to={`/@${chat.chatName}`}
-      className={`${styles.chat} unselectable ${chat.id === selectedChat?.id ? active : ''}`}>
+      className={`${styles.chat} unselectable ${chat.id === selectedChat?.id ? active : ''} ${
+        isNewChat(chat) ? styles.new : ''
+      }`}>
       {/* TODO: get image url from server. Images should be stored on the server */}
       {/* <img src={chat.imageUrl} alt="avatar" /> */}
       <img src={avatarSvg} alt="avatar" />

@@ -33,6 +33,12 @@ $img-offset: 10px;
       color: white;
     }
   }
+
+  &.new {
+    .message {
+      font-style: italic;
+    }
+  }
 }
 
 .sender {
