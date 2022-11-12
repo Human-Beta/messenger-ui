@@ -1,5 +1,4 @@
 import { Status } from '../../@types/status';
-import { isNewChat } from '../../utils/chat.utils';
 import messageUtils from '../../utils/message.utils';
 import { RootState } from '../store';
 
@@ -10,10 +9,6 @@ export const getChatMessages = (state: RootState): Message[] =>
   state.message.messages[state.chat.selectedChat!.id];
 
 export const getLastMessage = (chat: Chat) => {
-  if (isNewChat(chat)) {
-    return (): Message => chat.initialLastMessage;
-  }
-
   return (state: RootState): Message =>
     messageUtils.getLastMessage(state.message.messages[chat.id]);
 };

@@ -1,9 +1,8 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import avatarSvg from '../../../assets/img/avatar.svg';
-import { createNewChat } from '../../../redux/chat/slice';
 import { stopSearching } from '../../../redux/search/slice';
-import { useAppDispatch } from '../../../redux/store';
+import { getCreateNewChatAction, useAppDispatch } from '../../../redux/store';
 import styles from './SearchChat.module.scss';
 
 const SearchUnknownUser: FC<User> = (user) => {
@@ -15,7 +14,7 @@ const SearchUnknownUser: FC<User> = (user) => {
       className={`${styles.root} unselectable`}
       onClick={() => {
         dispatch(stopSearching());
-        dispatch(createNewChat(user));
+        dispatch(getCreateNewChatAction(user));
       }}>
       {/* TODO: get image url from server. Images should be stored on the server */}
       {/* <img src={avatarUrl} alt="avatar" /> */}

@@ -21,8 +21,9 @@
 - [ ] Implement unread messages functionality
 - [ ] Implement searching
   - [x] for existing chats
-  - [ ] for global chats
+  - [x] for global chats (new users)
   - [ ] for messages
+- [ ] Use https://redux-toolkit.js.org/usage/usage-guide#sorting-entities for sorting chats
 - [ ] Store in the local storage
   - [ ] chats
   - [ ] messages

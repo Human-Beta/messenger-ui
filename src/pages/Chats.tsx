@@ -7,11 +7,12 @@ import Background from '../components/Background';
 import ChatArea from '../components/ChatArea';
 import Sidebar from '../components/Sidebar';
 import { getChats, getChatsInitStatus, getSelectedChat } from '../redux/chat/selectors';
-import { deleteNewChat, NEW_CHAT_ID, setSelectedChat } from '../redux/chat/slice';
+import { addChat, setSelectedChat } from '../redux/chat/slice';
 import { addMessage } from '../redux/message/slice';
 import { isSearhing } from '../redux/search/selectors';
-import { useAppDispatch } from '../redux/store';
+import { DELETE_NEW_CHAT_ACTION, useAppDispatch } from '../redux/store';
 import { getSocket } from '../services/socket.service';
+import { isNotNewChat } from '../utils/chat.utils';
 
 const findChat = (chats: Chat[], chatName: string | undefined) =>
   chats.find((chat) => chat.chatName === chatName);
@@ -43,8 +44,14 @@ const Chats: FC = () => {
   }, [navigate, location, searching]);
 
   useEffect(() => {
-    if (selectedChat?.id !== NEW_CHAT_ID) {
-      dispatch(deleteNewChat());
+    if (searching) {
+      dispatch(DELETE_NEW_CHAT_ACTION);
+    }
+  }, [dispatch, searching]);
+
+  useEffect(() => {
+    if (!selectedChat || isNotNewChat(selectedChat)) {
+      dispatch(DELETE_NEW_CHAT_ACTION);
     }
   }, [dispatch, selectedChat]);
 
@@ -78,12 +85,18 @@ const Chats: FC = () => {
       dispatch(addMessage(message));
     };
 
+    const saveChat = (chat: Chat) => {
+      dispatch(addChat(chat));
+    };
+
     const socket = getSocket();
 
     socket.on('message', saveMessage);
+    socket.on('chat', saveChat);
 
     return () => {
       socket.off('message', saveMessage);
+      socket.off('chat', saveChat);
     };
   }, [dispatch]);
 

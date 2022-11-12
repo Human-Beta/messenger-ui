@@ -28,7 +28,7 @@ export const createMessage = (
 };
 
 export const getLastMessages = (chats: Chat[]) => {
-  return chats.reduce<{ [key: number]: Message[] }>((map, chat) => {
+  return chats.reduce<{ [key: number]: (Message | undefined)[] }>((map, chat) => {
     map[chat.id] = [chat.initialLastMessage];
     return map;
   }, {});
