@@ -24,6 +24,17 @@ const chatSlice = createSlice({
     addChats(state, action: PayloadAction<Chat[]>) {
       state.chats.push(...action.payload);
     },
+    addInitMessage(state, action: PayloadAction<Message>) {
+      const message = action.payload;
+
+      const chat = state.chats.find((c) => c.id === message.chatId);
+
+      if (chat) {
+        chat.initialLastMessage = message;
+      } else {
+        console.error(`There is no chat for message: ${message}`);
+      }
+    },
   },
   extraReducers(builder) {
     // ---- getInitChats ----
@@ -75,6 +86,6 @@ const chatSlice = createSlice({
   },
 });
 
-export const { setSelectedChat, addChat, addChats } = chatSlice.actions;
+export const { setSelectedChat, addChat, addChats, addInitMessage } = chatSlice.actions;
 
 export default chatSlice.reducer;

@@ -7,8 +7,8 @@ import Background from '../components/Background';
 import ChatArea from '../components/ChatArea';
 import Sidebar from '../components/Sidebar';
 import { getChats, getChatsInitStatus, getSelectedChat } from '../redux/chat/selectors';
-import { addChat, setSelectedChat } from '../redux/chat/slice';
-import { addMessage } from '../redux/message/slice';
+import { addChat, addInitMessage, setSelectedChat } from '../redux/chat/slice';
+import { addMessage, initMessages } from '../redux/message/slice';
 import { isSearhing } from '../redux/search/selectors';
 import { DELETE_NEW_CHAT_ACTION, useAppDispatch } from '../redux/store';
 import { getSocket } from '../services/socket.service';
@@ -82,11 +82,15 @@ const Chats: FC = () => {
       // converting number date to string.
       message.date = moment(message.date).toISOString();
 
+      dispatch(addInitMessage(message));
       dispatch(addMessage(message));
     };
 
     const saveChat = (chat: Chat) => {
+      // TODO: remove
+      console.log('received chat:', chat);
       dispatch(addChat(chat));
+      dispatch(initMessages(chat));
     };
 
     const socket = getSocket();

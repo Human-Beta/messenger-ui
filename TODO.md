@@ -23,6 +23,8 @@
   - [x] for existing chats
   - [x] for global chats (new users)
   - [ ] for messages
+- [ ] Add CI/CD
+  - [ ] Deploy with serverless framework (CloudFront? AWS::CloudFront::Distribution?)
 - [ ] Use https://redux-toolkit.js.org/usage/usage-guide#sorting-entities for sorting chats
 - [ ] Store in the local storage
   - [ ] chats

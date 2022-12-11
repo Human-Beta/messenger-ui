@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Status } from '../../@types/status';
 import { createMessage } from '../../services/message.service';
 import { getInitMessagesFromChat, getNextMessagesFromChat, sendMessage } from './asyncActions';
@@ -14,13 +14,18 @@ const messageSlice = createSlice({
   name: 'message',
   initialState,
   reducers: {
-    setMessages(state, action) {
+    setMessages(state, action: PayloadAction<{ [key: number]: Message[] }>) {
       state.messages = { ...state.messages, ...action.payload };
     },
-    addMessage(state, action) {
+    addMessage(state, action: PayloadAction<Message>) {
       const message: Message = action.payload;
 
       state.messages[message.chatId].unshift(message);
+    },
+    initMessages(state, action: PayloadAction<Chat>) {
+      const chat = action.payload;
+
+      state.messages[chat.id] = [];
     },
   },
   extraReducers(builder) {
@@ -102,6 +107,6 @@ const messageSlice = createSlice({
   },
 });
 
-export const { addMessage, setMessages } = messageSlice.actions;
+export const { addMessage, setMessages, initMessages } = messageSlice.actions;
 
 export default messageSlice.reducer;

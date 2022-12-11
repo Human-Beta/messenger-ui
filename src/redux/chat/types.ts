@@ -11,3 +11,7 @@ export interface GetChatsParams {
   excludedIds?: number[];
   size: number;
 }
+
+export interface CreatePrivateChatParams {
+  nickname: string;
+}

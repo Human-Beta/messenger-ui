@@ -2,11 +2,14 @@ import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 import sendSvg from '../../assets/img/send.svg';
+import { createPrivateChat } from '../../redux/chat/asyncActions';
+import { addInitMessage } from '../../redux/chat/slice';
 import { sendMessage } from '../../redux/message/asyncActions';
 import { getChatMessages } from '../../redux/message/selectors';
-import { useAppDispatch } from '../../redux/store';
+import { saveCreatedNewChatAction, useAppDispatch } from '../../redux/store';
 import { getUser } from '../../redux/user/selectors';
 import { createMessageRequest } from '../../services/message.service';
+import { isNewChat } from '../../utils/chat.utils';
 import styles from './ChatAreaInput.module.scss';
 
 interface ChatAreaInputProps {
@@ -25,7 +28,22 @@ const ChatAreaInput: FC<ChatAreaInputProps> = ({ selectedChat, onSend }) => {
     if (value.trim()) {
       const messageRequest = createMessageRequest(selectedChat.id, currentUser.id, value.trim());
 
-      dispatch(sendMessage(messageRequest)).then(onSend);
+      if (isNewChat(selectedChat)) {
+        // TODO: refactor!
+        dispatch(createPrivateChat(selectedChat.chatName))
+          .unwrap()
+          .then((createdChat) => {
+            dispatch(saveCreatedNewChatAction(createdChat.id));
+            dispatch(sendMessage({ ...messageRequest, chatId: createdChat.id }))
+              .unwrap()
+              .then((message) => {
+                dispatch(addInitMessage(message));
+              });
+          })
+          .then(onSend);
+      } else {
+        dispatch(sendMessage(messageRequest)).then(onSend);
+      }
 
       setValue('');
     }

@@ -23,6 +23,13 @@ const chatApi = {
       },
     });
   },
+  async createPrivateChat(nickname: string): Promise<AxiosResponse<Chat>> {
+    return axios.post<Chat>('/chats/private', null, {
+      params: {
+        nickname,
+      },
+    });
+  },
 };
 
 export default chatApi;

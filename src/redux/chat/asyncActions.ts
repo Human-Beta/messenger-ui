@@ -38,3 +38,12 @@ export const getNextChats = createAsyncThunk<Chat[], GetChatsParams>(
     },
   },
 );
+
+export const createPrivateChat = createAsyncThunk<Chat, string>(
+  'chats/createPrivateChat',
+  async (nickname) => {
+    const { data } = await chatApi.createPrivateChat(nickname);
+
+    return data;
+  },
+);
