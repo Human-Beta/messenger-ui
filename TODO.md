@@ -1,0 +1,27 @@
+- [x] Add sending a message
+- [x] Add loading while message is not sent
+- [x] Change structure of state. Should be a map of messages.
+  - [x] { [key: chatId]: Message[] }
+- [x] Change last message in the chat when message is sent
+- [x] Add skeletons when chats/messages load
+- [x] Add shadow for messages
+- [x] Routers for chats (localhost:3000/@Some_nickname)
+- [ ] On app loading add verifying if access_token is valid
+  - [ ] Add request for the current user
+- [ ] Common handler for a 401 error. Redirect on the login page if the error occured. (response interceptor?)
+  - [ ] Common handler for any error (show a pop-up?).
+- [ ] Use axios interceptor to add Authorization header for each request
+- [ ] Add arrow in the chat for scrolling down
+- [ ] Add loaders (pagination)
+  - [ ] chats loading
+  - [ ] messages loading
+- [ ] Lazy loading for components
+- [ ] Avatars
+  - [ ] Sidebar
+  - [ ] Chat header
+- [ ] Add sidebar resizing
+- [ ] Add retry mechanism when smth is not loaded (???)
+- [ ] Should I use the next:
+  - [ ] React.memo
+  - [ ] useCallback
+- [ ] Use lodash?

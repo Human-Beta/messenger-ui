@@ -1,0 +1,13 @@
+.background-gradient {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  z-index: -999;
+  background: rgb(123, 173, 137);
+  background: linear-gradient(
+    45deg,
+    rgba(123, 173, 137, 1) 0%,
+    rgba(208, 214, 142, 0.8) 52%,
+    rgba(144, 188, 136, 1) 100%
+  );
+}
