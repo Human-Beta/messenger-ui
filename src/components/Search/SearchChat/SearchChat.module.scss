@@ -1,0 +1,36 @@
+$img-width: 50px;
+$img-offset: 10px;
+
+.root {
+  text-decoration: none;
+  color: inherit;
+
+  border-radius: 15px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 75px;
+
+  img {
+    position: absolute;
+    width: $img-width;
+    left: $img-offset;
+  }
+
+  span {
+    margin-left: calc($img-width + $img-offset * 2);
+
+    &.name {
+      font-weight: 700;
+    }
+
+    &.chat_name {
+      font-style: italic;
+    }
+  }
+
+  &:hover {
+    background-color: rgb(235, 233, 233);
+  }
+}

@@ -1,11 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Status } from '../../@types/status';
 import { createMessage } from '../../services/message.service';
-import { getMessagesFromChat, sendMessage } from './asyncActions';
+import { getInitMessagesFromChat, getNextMessagesFromChat, sendMessage } from './asyncActions';
 import { MessageState } from './types';
 
 const initialState: MessageState = {
   messages: {},
+  initMessagesStatuses: {},
   messagesStatuses: {},
 };
 
@@ -13,40 +14,71 @@ const messageSlice = createSlice({
   name: 'message',
   initialState,
   reducers: {
-    setMessages(state, action) {
-      state.messages = action.payload;
+    setMessages(state, action: PayloadAction<{ [key: number]: Message[] }>) {
+      state.messages = { ...state.messages, ...action.payload };
+    },
+    addMessage(state, action: PayloadAction<Message>) {
+      const message: Message = action.payload;
+
+      state.messages[message.chatId].unshift(message);
+    },
+    initMessages(state, action: PayloadAction<Chat>) {
+      const chat = action.payload;
+
+      state.messages[chat.id] = [];
     },
   },
   extraReducers(builder) {
-    // --- getMessages ---
+    // --- getInitMessagesFromChat ---
 
-    builder.addCase(getMessagesFromChat.pending, (state, action) => {
+    builder.addCase(getInitMessagesFromChat.pending, (state, action) => {
+      state.initMessagesStatuses[action.meta.arg.chatId] = Status.LOADING;
+    });
+
+    builder.addCase(getInitMessagesFromChat.fulfilled, (state, action) => {
+      state.messages[action.meta.arg.chatId] = action.payload;
+
+      if (action.payload.length < action.meta.arg.size) {
+        state.initMessagesStatuses[action.meta.arg.chatId] = Status.FULL_LOADED;
+      } else {
+        state.initMessagesStatuses[action.meta.arg.chatId] = Status.SUCCESS;
+      }
+    });
+
+    builder.addCase(getInitMessagesFromChat.rejected, (state, action) => {
+      state.initMessagesStatuses[action.meta.arg.chatId] = Status.ERROR;
+      // TODO: what should be here when an error?
+    });
+
+    // --- getNextMessagesFromChat ---
+
+    builder.addCase(getNextMessagesFromChat.pending, (state, action) => {
       state.messagesStatuses[action.meta.arg.chatId] = Status.LOADING;
     });
 
-    builder.addCase(getMessagesFromChat.fulfilled, (state, action) => {
-      state.messagesStatuses[action.meta.arg.chatId] = Status.SUCCESS;
-      state.messages[action.meta.arg.chatId] = action.payload.reverse();
-    });
+    builder.addCase(getNextMessagesFromChat.fulfilled, (state, action) => {
+      state.messages[action.meta.arg.chatId].push(...action.payload);
 
-    builder.addCase(getMessagesFromChat.rejected, (state, action) => {
-      state.messagesStatuses[action.meta.arg.chatId] = Status.ERROR;
-      // TODO: what should be here when an error?
+      if (action.payload.length < action.meta.arg.size) {
+        state.messagesStatuses[action.meta.arg.chatId] = Status.FULL_LOADED;
+      } else {
+        state.messagesStatuses[action.meta.arg.chatId] = Status.SUCCESS;
+      }
     });
 
     // --- sendMessage ---
 
     builder.addCase(sendMessage.pending, (state, action) => {
-      const newMessage = createMessage(action.meta.arg);
+      const newMessage = createMessage(action.meta.arg, action.meta.requestId);
 
-      state.messages[action.meta.arg.chatId].push(newMessage);
+      state.messages[action.meta.arg.chatId].unshift(newMessage);
     });
 
     builder.addCase(sendMessage.fulfilled, (state, action) => {
       const receivedMessage = action.payload;
-      // TODO: use map instead? state.messages[action.meta.arg.localId]
+
       const message = state.messages[action.meta.arg.chatId].find(
-        (msg) => msg.localId === action.meta.arg.localId,
+        (msg) => msg.localId === action.meta.requestId,
       );
 
       if (message) {
@@ -54,10 +86,6 @@ const messageSlice = createSlice({
         message.date = receivedMessage.date;
         message.status = Status.SUCCESS;
       } else {
-        // TODO: error? or:
-        // message!.id = receivedMessage.id;
-        // message!.date = receivedMessage.date;
-        // message!.status = Status.SUCCESS;
         // TODO: logger
         console.log(`there is no message for id ${action.meta.arg.chatId}`);
       }
@@ -65,7 +93,7 @@ const messageSlice = createSlice({
 
     builder.addCase(sendMessage.rejected, (state, action) => {
       const message = state.messages[action.meta.arg.chatId].find(
-        (msg) => msg.localId === action.meta.arg.localId,
+        (msg) => msg.localId === action.meta.requestId,
       );
 
       if (message) {
@@ -79,6 +107,6 @@ const messageSlice = createSlice({
   },
 });
 
-export const { setMessages } = messageSlice.actions;
+export const { addMessage, setMessages, initMessages } = messageSlice.actions;
 
 export default messageSlice.reducer;

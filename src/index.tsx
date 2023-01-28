@@ -1,9 +1,9 @@
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { store } from './redux/store';
-
 import { BrowserRouter } from 'react-router-dom';
+import { store } from './redux/store';
 import App from './App';
+import { AxiosInterceptor } from './AxiosInterceptor';
 import './index.scss';
 
 const rootElement = document.getElementById('root');
@@ -13,7 +13,9 @@ if (rootElement) {
   root.render(
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <AxiosInterceptor>
+          <App />
+        </AxiosInterceptor>
       </BrowserRouter>
     </Provider>,
   );

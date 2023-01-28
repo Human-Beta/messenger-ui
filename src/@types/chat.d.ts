@@ -3,5 +3,5 @@ interface Chat {
   name: string;
   chatName: string;
   imageUrl: string;
-  initialLastMessage: Message;
+  initialLastMessage?: Message;
 }

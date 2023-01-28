@@ -10,7 +10,7 @@ const HEIGHT_OFFSET = 5;
 
 const isMy = () => Math.random() > 0.5;
 
-export const MessageItemSkeleton = () => {
+const MessageItemSkeleton = () => {
   const width = randomValue(MIN_WIDTH, WIDTH_OFFSET);
   const height = randomValue(MIN_HEIGHT, HEIGHT_OFFSET);
 
@@ -30,3 +30,5 @@ export const MessageItemSkeleton = () => {
     </ContentLoader>
   );
 };
+
+export default MessageItemSkeleton;

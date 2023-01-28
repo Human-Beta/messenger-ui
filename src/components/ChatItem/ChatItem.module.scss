@@ -2,7 +2,6 @@ $img-width: 50px;
 $img-offset: 10px;
 
 .chat {
-  // for tag a
   text-decoration: none;
   color: inherit;
 
@@ -13,7 +12,6 @@ $img-offset: 10px;
   justify-content: center;
   height: 75px;
   padding-right: 10px;
-  cursor: pointer;
 
   img {
     position: absolute;
@@ -33,6 +31,12 @@ $img-offset: 10px;
     background-color: #3390ec;
     span {
       color: white;
+    }
+  }
+
+  &.new {
+    .message {
+      font-style: italic;
     }
   }
 }

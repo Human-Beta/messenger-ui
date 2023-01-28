@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { Status } from '../@types/status';
+import { isNotNewChat } from '../utils/chat.utils';
 
 export const createMessageRequest = (
   chatId: number,
@@ -7,14 +8,16 @@ export const createMessageRequest = (
   value: string,
 ): MessageRequest => {
   return {
-    localId: new Date().getTime(),
     chatId,
     senderId,
     value,
   };
 };
 
-export const createMessage = ({ localId, senderId, chatId, value }: MessageRequest): Message => {
+export const createMessage = (
+  { senderId, chatId, value }: MessageRequest,
+  localId: string,
+): Message => {
   return {
     localId,
     senderId,
@@ -26,8 +29,8 @@ export const createMessage = ({ localId, senderId, chatId, value }: MessageReque
 };
 
 export const getLastMessages = (chats: Chat[]) => {
-  return chats.reduce<{ [key: number]: Message[] }>((map, chat) => {
-    map[chat.id] = [chat.initialLastMessage];
+  return chats.filter(isNotNewChat).reduce<{ [key: number]: Message[] }>((map, chat) => {
+    map[chat.id] = [chat.initialLastMessage!];
     return map;
   }, {});
 };

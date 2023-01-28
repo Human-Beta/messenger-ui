@@ -1,0 +1,47 @@
+import { FC, useCallback } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { useSelector } from 'react-redux';
+import { PAGE_SIZE } from '..';
+import { Status } from '../../../@types/status';
+import { findNextChats } from '../../../redux/search/asyncActions';
+import { getNextChatsStatus, getFoundChats, getSearchValue } from '../../../redux/search/selectors';
+import { useAppDispatch } from '../../../redux/store';
+import { extractSearchValue } from '../../../utils/search.utils';
+import styles from '../Search.module.scss';
+import SearchChat from '../SearchChat';
+
+const SearchChats: FC = () => {
+  const dispatch = useAppDispatch();
+
+  const chats = useSelector(getFoundChats);
+  const value = useSelector(getSearchValue);
+  const status = useSelector(getNextChatsStatus);
+
+  const loadNextChats = useCallback(
+    (inView: boolean) => {
+      const name = extractSearchValue(value);
+      if (inView && name) {
+        dispatch(findNextChats({ name, size: PAGE_SIZE }));
+      }
+    },
+    [dispatch, value],
+  );
+
+  const [loadTriggerRef] = useInView({
+    onChange: loadNextChats,
+  });
+
+  return (
+    <div className={styles.chats}>
+      <div className={`${styles.search_label} unselectable`}>Existing chats</div>
+      {chats.map((chat) => (
+        <SearchChat key={chat.id} chat={chat} />
+      ))}
+      {status !== Status.FULL_LOADED && (
+        <div ref={loadTriggerRef} className={styles['load-trigger']} />
+      )}
+    </div>
+  );
+};
+
+export default SearchChats;

@@ -2,6 +2,16 @@ import { Status } from '../../@types/status';
 
 export interface ChatState {
   chats: Chat[];
-  status: Status;
+  initStatus: Status;
+  status: Status | null;
   selectedChat: Chat | null;
+}
+
+export interface GetChatsParams {
+  excludedIds?: number[];
+  size: number;
+}
+
+export interface CreatePrivateChatParams {
+  nickname: string;
 }

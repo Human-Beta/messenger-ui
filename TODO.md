@@ -6,22 +6,38 @@
 - [x] Add skeletons when chats/messages load
 - [x] Add shadow for messages
 - [x] Routers for chats (localhost:3000/@Some_nickname)
-- [ ] On app loading add verifying if access_token is valid
-  - [ ] Add request for the current user
-- [ ] Common handler for a 401 error. Redirect on the login page if the error occured. (response interceptor?)
-  - [ ] Common handler for any error (show a pop-up?).
-- [ ] Use axios interceptor to add Authorization header for each request
-- [ ] Add arrow in the chat for scrolling down
-- [ ] Add loaders (pagination)
-  - [ ] chats loading
-  - [ ] messages loading
-- [ ] Lazy loading for components
+- [x] On app loading add verifying if access_token is valid
+  - [x] Add request for the current user
+- [x] Common handler for a 401 error. Redirect on the login page if the error occured. (response interceptor)
+- [ ] Common handler for any error (show a pop-up? response interceptor).
+- [x] Use axios interceptor to add Authorization header for each request
+- [x] Login validation
+- [x] Register validation
+- [x] Prevent messages loading on each chat changing
+- [x] Add arrow in the chat for scrolling down
+- [x] Implement loaders (pagination)
+  - [x] chats loading
+  - [x] messages loading
+- [ ] Implement unread messages functionality
+- [ ] Implement searching
+  - [x] for existing chats
+  - [x] for global chats (new users)
+  - [ ] for messages
+- [ ] Add CI/CD
+  - [ ] Deploy with serverless framework (CloudFront? AWS::CloudFront::Distribution?)
+  - [ ] Use serverless-s3-sync plugin to sync files from '/build' folder with host s3 bucket
+  - [ ] Use serverless-cloudfront-invalidate plugin to invalidate all files in cloudfront
+- [ ] Use https://redux-toolkit.js.org/usage/usage-guide#sorting-entities for sorting chats
+- [ ] Store in the local storage
+  - [ ] chats
+  - [ ] messages
+- [ ] Load all messages and chats when socket connection with server is dropped and then established again
+- [ ] Share socket connection between tabs?
+- [ ] Add Settings page?
 - [ ] Avatars
-  - [ ] Sidebar
+  - [ ] Chat item
   - [ ] Chat header
+- [ ] Implement adding an avatar to the account
+- [ ] Move some dependencies to the devDependencies (@types/...)
+- [ ] Lazy loading for components
 - [ ] Add sidebar resizing
-- [ ] Add retry mechanism when smth is not loaded (???)
-- [ ] Should I use the next:
-  - [ ] React.memo
-  - [ ] useCallback
-- [ ] Use lodash?

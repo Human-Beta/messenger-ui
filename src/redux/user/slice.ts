@@ -1,20 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getCurrentUser } from './asyncActions';
 import { UserState } from './types';
 
-const initialState: UserState = {
-  // TODO: fix it
-  currentUser: {
-    id: 0,
-    nickName: 'killer_sniper',
-    name: 'Nikita Shishov',
-    avatarUrl: '#',
-  },
-};
+const initialState: UserState = {} as unknown as UserState;
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {},
+  extraReducers(builder) {
+    builder.addCase(getCurrentUser.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
+    });
+  },
 });
 
 export default userSlice.reducer;

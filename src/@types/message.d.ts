@@ -1,6 +1,6 @@
 interface Message {
   id?: number;
-  localId: number;
+  localId?: string;
   senderId: number;
   chatId: number;
   value: string;

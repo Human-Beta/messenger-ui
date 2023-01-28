@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { MessageItemSkeleton } from '../MessageItem/MessageItemSkeleton';
+import MessageItemSkeleton from '../MessageItem/MessageItemSkeleton';
 
 const MESSAGES_COUNT = 20;
 
