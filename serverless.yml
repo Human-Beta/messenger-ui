@@ -1,0 +1,110 @@
+org: brainless
+app: messenger
+service: messenger-ui
+frameworkVersion: '3'
+
+package:
+  patterns:
+    - '!.idea/**'
+    - '!README.md'
+    - '!TODO.md'
+#  TODO: default is true. Do I need to change it? MOVE SOME DEPENDENCIES TO THE DEV DEPS
+#  excludeDevDependencies: false
+
+custom:
+  myStage: ${self:provider.stage}
+  site:
+    bucketName: ${self:service}-${self:custom.myStage}-website
+    indexDocument: index.html
+    errorDocument: index.html
+  s3Sync:
+    - bucketName: ${self:custom.site.bucketName}
+      localDir: build
+      acl: public-read
+      defaultContentType: text/html
+  cloudfrontInvalidate:
+    - distributionIdKey: CloudFrontDistributionId
+      autoInvalidate: true
+      items:
+        - "/*"
+
+provider:
+  name: aws
+  stage: ${opt:stage, 'local'}
+  region: us-east-1
+  profile: default
+
+plugins:
+  - serverless-s3-sync
+  - serverless-cloudfront-invalidate
+
+resources:
+  Outputs:
+    CloudFrontDistributionId:
+      Description: CloudFront distribution id
+      Value: !Ref CloudFrontDistribution
+    CloudFrontDistributionAddress:
+      Description: CloudFront distribution id
+      Value: !GetAtt CloudFrontDistribution.DomainName
+  Parameters:
+    CloudFrontWebsiteIndexDoc:
+      Description: Website index document
+      Type: String
+      Default: ${self:custom.site.indexDocument}
+    CloudFrontWebsiteErrorDoc:
+      Description: Website error document
+      Type: String
+      Default: ${self:custom.site.errorDocument}
+    OptimizedCachePolicyId:
+      Description: Optimized cache policy
+      Type: String
+      Default: 658327ea-f89d-4fab-a63d-7e88639e58f6
+  Resources:
+    AssetsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.site.bucketName}
+        AccessControl: PublicRead
+        WebsiteConfiguration:
+          IndexDocument: !Ref CloudFrontWebsiteIndexDoc
+          ErrorDocument: !Ref CloudFrontWebsiteErrorDoc
+    CloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Origins:
+            - DomainName: !GetAtt AssetsBucket.RegionalDomainName
+              Id: S3BucketOrigin
+              S3OriginConfig:
+                OriginAccessIdentity:
+                  Fn::Join:
+                    - ""
+                    - - "origin-access-identity/cloudfront/"
+                      - !Ref CloudFrontOriginAccessIdentity
+          Comment: "CloudFront origin for messenger"
+          DefaultCacheBehavior:
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+            TargetOriginId: S3BucketOrigin
+            ViewerProtocolPolicy: allow-all
+            CachePolicyId: !Ref OptimizedCachePolicyId
+          DefaultRootObject: !Ref CloudFrontWebsiteIndexDoc
+          CustomErrorResponses:
+            - ErrorCachingMinTTL: 0
+              ErrorCode: 404
+              ResponseCode: 200
+              ResponsePagePath:
+                Fn::Join:
+                  - ""
+                  - - "/"
+                    - !Ref CloudFrontWebsiteErrorDoc
+          Enabled: true
+          HttpVersion: http2
+          PriceClass: PriceClass_100
+    CloudFrontOriginAccessIdentity:
+      Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+      Properties:
+        CloudFrontOriginAccessIdentityConfig:
+          Comment: "CloudFront  origin access identity for messenger"
