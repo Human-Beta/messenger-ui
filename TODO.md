@@ -27,7 +27,7 @@
   - [x] Deploy with serverless framework (CloudFront? AWS::CloudFront::Distribution?)
   - [x] Use serverless-s3-sync plugin to sync files from '/build' folder with host s3 bucket
   - [x] Use serverless-cloudfront-invalidate plugin to invalidate all files in cloudfront
-- [ ] Use .env file to manage properties. For example, to be able to change a host of the server
+- [x] Use .env file to manage properties. For example, to be able to change a host of the server
 - [ ] Add Eslint config
 - [ ] Move some dependencies to devDependencies
   - [ ] serverless-s3-sync?

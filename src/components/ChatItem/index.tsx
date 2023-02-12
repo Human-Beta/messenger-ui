@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import avatarSvg from '../../assets/img/avatar.svg';
 import { getSelectedChat } from '../../redux/chat/selectors';
 import { getLastMessage } from '../../redux/message/selectors';
-import { getDateString } from '../../utils';
+import { getDateString } from '../../utils/date.utils';
 import { isNewChat } from '../../utils/chat.utils';
 import styles from './ChatItem.module.scss';
 
