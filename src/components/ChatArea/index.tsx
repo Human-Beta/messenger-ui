@@ -1,3 +1,4 @@
+import React from 'react';
 import { FC, useCallback, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
@@ -17,8 +18,10 @@ import Spinner from '../Spinner';
 import styles from './ChatArea.module.scss';
 import MessageItemsSkeleton from './MessageItemsSkeleton';
 import SayHello from './SayHello';
+import moment from "moment";
+import DateGroup from "./DateGroup";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 50;
 
 interface ChatAreaProps {
   selectedChat: Chat;
@@ -86,7 +89,17 @@ const ChatArea: FC<ChatAreaProps> = ({ selectedChat }) => {
             {initMessagesStatus < Status.SUCCESS ? (
               <MessageItemsSkeleton />
             ) : (
-              messages.map((msg) => <MessageItem key={msg.date} {...msg} />)
+              messages.map((msg, index) => {
+                const prevMsg = messages[index + 1];
+                if (!prevMsg || moment(msg.date).date() > moment(prevMsg.date).date()) {
+                  return <React.Fragment key={msg.date}>
+                    <MessageItem {...msg} />
+                    <DateGroup date={msg.date}/>
+                  </React.Fragment>;
+                }
+
+                return <MessageItem key={msg.id} {...msg} />;
+              })
             )}
             {initMessagesStatus === Status.SUCCESS && messagesStatus !== Status.FULL_LOADED && (
               <div ref={loadTriggerRef} className={styles['load-trigger']} />

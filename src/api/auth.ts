@@ -7,7 +7,7 @@ const authApi = {
   getToken(username: string, password: string): Promise<AxiosResponse<Auth>> {
     return axios.post<Auth>('/oauth/token', null, {
       headers: {
-        Authorization: `Basic ${config.local.BASIC_AUTH_HEADER}`,
+        Authorization: `Basic ${config.BASIC_AUTH_HEADER}`,
       },
       params: {
         grant_type: 'password',

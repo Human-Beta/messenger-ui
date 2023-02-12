@@ -6,8 +6,7 @@ import { LOGOUT_USER_ACTION, useAppDispatch } from './redux/store';
 import { getAccessToken } from './services/localStorage.service';
 
 const instance = axios.create({
-  // TODO: url should be taken from some property depends on env
-  baseURL: config.local.HOST_URL,
+  baseURL: `http://${config.SERVER_HOST}:${config.SERVER_PORT}`,
 });
 
 export const AxiosInterceptor: FC<Props> = ({ children }) => {

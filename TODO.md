@@ -24,9 +24,14 @@
   - [x] for global chats (new users)
   - [ ] for messages
 - [ ] Add CI/CD
-  - [ ] Deploy with serverless framework (CloudFront? AWS::CloudFront::Distribution?)
-  - [ ] Use serverless-s3-sync plugin to sync files from '/build' folder with host s3 bucket
-  - [ ] Use serverless-cloudfront-invalidate plugin to invalidate all files in cloudfront
+  - [x] Deploy with serverless framework (CloudFront? AWS::CloudFront::Distribution?)
+  - [x] Use serverless-s3-sync plugin to sync files from '/build' folder with host s3 bucket
+  - [x] Use serverless-cloudfront-invalidate plugin to invalidate all files in cloudfront
+- [x] Use .env file to manage properties. For example, to be able to change a host of the server
+- [ ] Add Eslint config
+- [ ] Move some dependencies to devDependencies
+  - [ ] serverless-s3-sync?
+  - [ ] typescript?
 - [ ] Use https://redux-toolkit.js.org/usage/usage-guide#sorting-entities for sorting chats
 - [ ] Store in the local storage
   - [ ] chats

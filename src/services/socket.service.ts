@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 import { getAccessToken } from './localStorage.service';
+import config from "../config";
 
 let socket: any = null;
 
@@ -50,7 +51,7 @@ export const initSocket = (autoConnect?: boolean) => {
   }
 
   // TODO: url from props
-  socket = io('http://localhost:8888/messenger', {
+  socket = io(`http://${config.SERVER_HOST}:${config.SERVER_SOCKET_PORT}/messenger`, {
     autoConnect,
     transports: ['polling', 'websocket'],
     query: {
